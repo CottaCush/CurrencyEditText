@@ -2,6 +2,9 @@
 
 A library to dynamically format your `EditTexts` to take currency inputs
 
+[![Build Status](https://travis-ci.com/CottaCush/CurrencyEditText.svg?branch=master)](https://travis-ci.com/CottaCush/CurrencyEditText)
+[ ![Download](https://api.bintray.com/packages/cottacush/maven/CurrencyEditText/images/download.svg) ](https://bintray.com/cottacush/maven/CurrencyEditText/_latestVersion)
+
 ## Gradle Dependency
 
 Add the dependency to your app's `build.gradle`:
