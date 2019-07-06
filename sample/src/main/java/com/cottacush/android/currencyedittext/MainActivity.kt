@@ -19,6 +19,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.cottacush.android.R
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -28,9 +29,5 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         button.setOnClickListener { textView.text = editText.getNumericValue().toString() }
 
-        editText.setCurrencySymbol("₦", useCurrencySymbolAsHint = true)
-
-        editText.setLocale(locale)
-        editText.setLocale("") //
     }
 }
