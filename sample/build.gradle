@@ -2,6 +2,8 @@ apply from: '../dependencies.gradle'
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
 
 android {
   compileSdkVersion versions.compileSdk
@@ -24,7 +26,8 @@ android {
 dependencies {
   implementation project(':library')
   implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:' + versions.kotlin
-
+  implementation 'androidx.core:core-ktx:' + versions.ktx
+  implementation 'com.google.android.material:material:' + versions.material
   implementation 'androidx.appcompat:appcompat:' + versions.androidx
   implementation 'com.android.support.constraint:constraint-layout:' + versions.constraintLayout
 }

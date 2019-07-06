@@ -36,10 +36,8 @@ android {
 }
 
 dependencies {
-    api 'androidx.appcompat:appcompat:' + versions.androidx
-
-    api 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:' + versions.kotlin
-
+    implementation 'androidx.appcompat:appcompat:' + versions.androidx
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:' + versions.kotlin
     implementation 'com.google.android.material:material:' + versions.material
 }
 

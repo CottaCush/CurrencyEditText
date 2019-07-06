@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) 2019 Cotta & Cush Limited.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.cottacush.android.currencyedittext
 
 import android.content.Context
@@ -5,6 +20,7 @@ import android.graphics.Rect
 import android.os.Build
 import android.text.InputType
 import android.util.AttributeSet
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.google.android.material.textfield.TextInputEditText
 import java.util.*
@@ -36,6 +52,7 @@ class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditTe
         if (useCurrencySymbolAsHint) hint = currencySymbolPrefix
         if (isLollipopAndAbove() && !localeTag.isNullOrBlank()) locale = Locale.forLanguageTag(localeTag)
         textWatcher = CurrencyInputWatcher(this, currencySymbolPrefix, locale)
+        Log.d("CurrencyEditText", "The current Locale is: ${locale.getDisplayName()} country")
     }
 
     fun setLocale(locale: Locale) {
@@ -43,7 +60,7 @@ class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditTe
         invalidateTextWatcher()
     }
 
-    // check https://docs.microsoft.com/en-us/previous-versions/commerce-server/ee825488(v=cs.20)
+    // TODO Add Lollipop requirement to this stuff.
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun setLocale(localeTag: String) {
         locale = Locale.forLanguageTag(localeTag)
@@ -60,6 +77,14 @@ class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditTe
         removeTextChangedListener(textWatcher)
         textWatcher = CurrencyInputWatcher(this, currencySymbolPrefix, locale)
         addTextChangedListener(textWatcher)
+    }
+
+    fun getNumericValue(): Double? {
+        return parseMoneyValue(
+            text.toString(),
+            textWatcher.decimalFormatSymbols.groupingSeparator.toString(),
+            currencySymbolPrefix
+        ).toDoubleOrNull()
     }
 
     override fun onFocusChanged(focused: Boolean, direction: Int, previouslyFocusedRect: Rect?) {

@@ -38,12 +38,12 @@ def (user, key) = getBintrayUserAndKey()
 publish {
   bintrayUser = user
   bintrayKey = key
-  userOrg = 'cotta-cush'
+  userOrg = 'cottacush'
   groupId = 'com.cottacush'
   artifactId = 'CurrencyEditText'
   publishVersion = versions.publishVersion
   desc = 'A library to dynamically format your EditTexts to take currency inputs'
-  website = 'https://github.com/afollestad/library-template'
+  website = 'https://github.com/CottaCush/CurrencyEditText'
   dryRun = false
 }
 

@@ -10,16 +10,17 @@
     <com.cottacush.android.currencyedittext.CurrencyEditText
             app:currencySymbol="$"
             app:useCurrencySymbolAsHint="true"
-            app:localeTag="it-IT"
+            app:localeTag="en-NG"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:ems="10"
-            android:id="@+id/editText" android:layout_marginTop="100dp"
-            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/editText"
             android:layout_marginEnd="60dp"
-
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="60dp"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.5" android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView" app:layout_constraintBottom_toTopOf="@+id/editText2"
+            android:layout_marginBottom="20dp"/>
 
     <com.google.android.material.textfield.TextInputEditText
             android:padding="16dp"
@@ -31,8 +32,29 @@
             android:ems="10"
             android:id="@+id/editText2"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginTop="8dp"
-            app:layout_constraintTop_toBottomOf="@+id/editText" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="0.16000003"/>
+            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/editText" app:layout_constraintBottom_toTopOf="@+id/button"
+            android:layout_marginBottom="20dp"/>
+    <TextView
+            android:textColor="@android:color/black"
+            android:textSize="22sp"
+            android:text="Value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView"
+            app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toTopOf="@+id/editText"
+            app:layout_constraintVertical_chainStyle="packed" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintVertical_bias="0.19999999"/>
+    <Button
+            android:text="get value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/editText2" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
