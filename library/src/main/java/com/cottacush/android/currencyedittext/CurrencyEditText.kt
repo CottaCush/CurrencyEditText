@@ -52,7 +52,6 @@ class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditTe
         if (useCurrencySymbolAsHint) hint = currencySymbolPrefix
         if (isLollipopAndAbove() && !localeTag.isNullOrBlank()) locale = Locale.forLanguageTag(localeTag)
         textWatcher = CurrencyInputWatcher(this, currencySymbolPrefix, locale)
-        Log.d("CurrencyEditText", "The current Locale is: ${locale.getDisplayName()} country")
     }
 
     fun setLocale(locale: Locale) {
@@ -60,7 +59,6 @@ class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditTe
         invalidateTextWatcher()
     }
 
-    // TODO Add Lollipop requirement to this stuff.
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun setLocale(localeTag: String) {
         locale = Locale.forLanguageTag(localeTag)

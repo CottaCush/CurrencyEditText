@@ -65,11 +65,11 @@ The `CurrencyEditText` uses the default `Locale` if no locale is specified. `Loc
 
 Numeric values for the editText can be gotten as shown below. 
  ```kotlin
-    editText.getNumericValue()
+    currencyEditText.getNumericValue()
  ```
  
 ## Using the formatter directly
- If you'd like to use the library with any `EditText`, you can attach your `EditText` with the `CurrencyInputWatcher` class:
+ If you'd like to use the library with any `EditText` widget, you can attach your `EditText` with the `CurrencyInputWatcher` class:
   
  ```kotlin
     editText.addTextChangedListener(CurrencyInputWatcher(editText,"₦", Locale.getDefault()))
