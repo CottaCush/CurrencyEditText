@@ -27,5 +27,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         button.setOnClickListener { textView.text = editText.getNumericValue().toString() }
+
+        editText.setCurrencySymbol("₦", useCurrencySymbolAsHint = true)
+
+        editText.setLocale(locale)
+        editText.setLocale("") //
     }
 }
