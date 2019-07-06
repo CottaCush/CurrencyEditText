@@ -23,7 +23,7 @@ import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.text.ParseException
-import java.util.*
+import java.util.Locale
 
 class CurrencyInputWatcher(
     private val editText: EditText,
@@ -42,7 +42,6 @@ class CurrencyInputWatcher(
 
     val decimalFormatSymbols: DecimalFormatSymbols
         get() = wholeNumberDecimalFormat.decimalFormatSymbols
-
 
     override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
         factionDecimalFormat.isDecimalSeparatorAlwaysShown = true

@@ -20,10 +20,9 @@ import android.graphics.Rect
 import android.os.Build
 import android.text.InputType
 import android.util.AttributeSet
-import android.util.Log
 import androidx.annotation.RequiresApi
 import com.google.android.material.textfield.TextInputEditText
-import java.util.*
+import java.util.Locale
 
 class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditText(context, attrs) {
     private var currencySymbolPrefix = ""
