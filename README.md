@@ -13,7 +13,7 @@ A library to dynamically format your `EditTexts` to take currency inputs.
 Add the dependency to your app's `build.gradle`:
 
 ```groovy
-implementation 'com.cottacush:CurrencyEditText:0.0.2'
+implementation 'com.cottacush:CurrencyEditText:0.0.3'
 ```
 
 ## Usage
@@ -80,4 +80,3 @@ Numeric values for the editText can be gotten as shown below.
  ```kotlin
     editText.addTextChangedListener(CurrencyInputWatcher(editText,"₦", Locale.getDefault()))
  ```
- 
