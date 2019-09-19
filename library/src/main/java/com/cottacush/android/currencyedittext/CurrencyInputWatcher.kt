@@ -24,7 +24,7 @@ import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.text.ParseException
-import java.util.Locale
+import java.util.*
 
 class CurrencyInputWatcher(
     private val editText: EditText,
@@ -33,9 +33,10 @@ class CurrencyInputWatcher(
 ) : TextWatcher {
 
     private var hasDecimalPoint = false
-    private val wholeNumberDecimalFormat = (NumberFormat.getNumberInstance(locale) as DecimalFormat).apply {
-        applyPattern("#,##0")
-    }
+    private val wholeNumberDecimalFormat =
+        (NumberFormat.getNumberInstance(locale) as DecimalFormat).apply {
+            applyPattern("#,##0")
+        }
 
     val decimalFormatSymbols: DecimalFormatSymbols
         get() = wholeNumberDecimalFormat.decimalFormatSymbols
@@ -46,8 +47,8 @@ class CurrencyInputWatcher(
     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
         hasDecimalPoint =
             s.toString().contains(decimalFormatSymbols.decimalSeparator.toString())
-        if (hasDecimalPoint && decimalLength==0) {
-            decimalLength = s.length +2
+        if (hasDecimalPoint && decimalLength == 0) {
+            decimalLength = s.length + 2
         }
     }
 
@@ -69,11 +70,15 @@ class CurrencyInputWatcher(
         val startLength = editText.text.length
         try {
             val numberWithoutSeparator =
-                parseMoneyValue(newInputString, decimalFormatSymbols.groupingSeparator.toString(), currencySymbol)
+                parseMoneyValue(
+                    newInputString,
+                    decimalFormatSymbols.groupingSeparator.toString(),
+                    currencySymbol
+                )
             val parsedNumber = wholeNumberDecimalFormat.parse(numberWithoutSeparator)
             val selectionStartIndex = editText.selectionStart
             if (hasDecimalPoint) {
-                if (decimalLength!=0){
+                if (decimalLength != 0) {
                     editText.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(decimalLength))
                 }
             } else {
