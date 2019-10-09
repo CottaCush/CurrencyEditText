@@ -72,18 +72,18 @@ class CurrencyInputWatcher(
         editText.removeTextChangedListener(this)
         val startLength = editText.text.length
         try {
-            val numberWithoutSeparator =
+            val numberWithoutGroupingSeparator =
                 parseMoneyValue(
                     newInputString,
                     decimalFormatSymbols.groupingSeparator.toString(),
                     currencySymbol
                 )
-            val parsedNumber = fractionDecimalFormat.parse(numberWithoutSeparator)!!
+            val parsedNumber = fractionDecimalFormat.parse(numberWithoutGroupingSeparator)!!
             val selectionStartIndex = editText.selectionStart
             if (hasDecimalPoint) {
                 fractionDecimalFormat.applyPattern(
                     FRACTION_FORMAT_PATTERN_PREFIX +
-                            getFormatSequenceAfterDecimalSeparator(numberWithoutSeparator)
+                            getFormatSequenceAfterDecimalSeparator(numberWithoutGroupingSeparator)
                 )
                 editText.setText("$currencySymbol${fractionDecimalFormat.format(parsedNumber)}")
             } else {
@@ -102,9 +102,14 @@ class CurrencyInputWatcher(
         editText.addTextChangedListener(this)
     }
 
-    private fun getFormatSequenceAfterDecimalSeparator(str: String): String {
+    /**
+     * @param number the original number to format
+     * @return the appropriate zero sequence for the input number. e.g 156.1 returns "0",
+     *  14.98 returns "00"
+     */
+    private fun getFormatSequenceAfterDecimalSeparator(number: String): String {
         val noOfCharactersAfterDecimalPoint =
-            str.length - str.indexOf(decimalFormatSymbols.decimalSeparator) - 1
+            number.length - number.indexOf(decimalFormatSymbols.decimalSeparator) - 1
         val sequence = StringBuilder()
         var i = 0
         while (i < noOfCharactersAfterDecimalPoint && i < MAX_NO_OF_DECIMAL_PLACES) {
