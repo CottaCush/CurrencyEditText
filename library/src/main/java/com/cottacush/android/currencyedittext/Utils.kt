@@ -15,16 +15,5 @@
  */
 package com.cottacush.android.currencyedittext
 
-import java.util.regex.Pattern
-
 fun parseMoneyValue(value: String, groupingSeparator: String, currencySymbol: String): String =
     value.replace(groupingSeparator, "").replace(currencySymbol, "")
-fun removeAllOccurenceOfChar(text: String): String {
-    val p = Pattern.compile("\\d+") // regex to extract only numbers from a string
-    val m = p.matcher(text)
-    val noChar = StringBuilder()
-    while (m.find()) {
-        noChar.append(m.group())
-    }
-    return noChar.toString()
-}

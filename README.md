@@ -66,7 +66,7 @@ The `CurrencyEditText` uses the default `Locale` if no locale is specified. `Loc
  ```kotlin
     currencyEditText.setLocale("en-NG") //Requires API level 21 and above.
  ```
-        
+ 
 ## Getting the input value
 
 Numeric values for the editText can be gotten as shown below. 
