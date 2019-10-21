@@ -17,13 +17,14 @@ package com.cottacush.android.currencyedittext
 
 import android.annotation.SuppressLint
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextWatcher
 import android.widget.EditText
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.text.ParseException
-import java.util.Locale
+import java.util.*
 
 class CurrencyInputWatcher(
     private val editText: EditText,
@@ -32,24 +33,23 @@ class CurrencyInputWatcher(
 ) : TextWatcher {
 
     private var hasDecimalPoint = false
-    private val wholeNumberDecimalFormat = (NumberFormat.getNumberInstance(locale) as DecimalFormat).apply {
-        applyPattern("#,##0")
-    }
-
-    private val factionDecimalFormat = (NumberFormat.getNumberInstance(locale) as DecimalFormat).apply {
-        applyPattern("#,##0.##")
-    }
+    private val wholeNumberDecimalFormat =
+        (NumberFormat.getNumberInstance(locale) as DecimalFormat).apply {
+            applyPattern("#,##0")
+        }
 
     val decimalFormatSymbols: DecimalFormatSymbols
         get() = wholeNumberDecimalFormat.decimalFormatSymbols
 
     override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
-        factionDecimalFormat.isDecimalSeparatorAlwaysShown = true
     }
 
     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
         hasDecimalPoint =
             s.toString().contains(decimalFormatSymbols.decimalSeparator.toString())
+        if (hasDecimalPoint && decimalLength == 0) {
+            decimalLength = s.length + 2
+        }
     }
 
     @SuppressLint("SetTextI18n")
@@ -70,12 +70,20 @@ class CurrencyInputWatcher(
         val startLength = editText.text.length
         try {
             val numberWithoutSeparator =
-                parseMoneyValue(newInputString, decimalFormatSymbols.groupingSeparator.toString(), currencySymbol)
-            val parsedNumber = factionDecimalFormat.parse(numberWithoutSeparator)
+                parseMoneyValue(
+                    newInputString,
+                    decimalFormatSymbols.groupingSeparator.toString(),
+                    currencySymbol
+                )
+            val parsedNumber = wholeNumberDecimalFormat.parse(numberWithoutSeparator)
             val selectionStartIndex = editText.selectionStart
             if (hasDecimalPoint) {
-                editText.setText("$currencySymbol${factionDecimalFormat.format(parsedNumber)}")
+                if (decimalLength != 0) {
+                    editText.filters = arrayOf<InputFilter>(InputFilter.LengthFilter(decimalLength))
+                }
             } else {
+                decimalLength = 0
+                editText.filters = arrayOf<InputFilter>()
                 editText.setText("$currencySymbol${wholeNumberDecimalFormat.format(parsedNumber)}")
             }
             val endLength = editText.text.length
@@ -89,5 +97,10 @@ class CurrencyInputWatcher(
             e.printStackTrace()
         }
         editText.addTextChangedListener(this)
+    }
+
+    companion object {
+        val TAG: String = CurrencyInputWatcher::class.java.simpleName
+        var decimalLength = 0
     }
 }
