@@ -24,6 +24,7 @@ import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.text.ParseException
 import java.util.Locale
+import kotlin.math.min
 
 class CurrencyInputWatcher(
     private val editText: EditText,
@@ -108,14 +109,7 @@ class CurrencyInputWatcher(
      *  14.98 returns "00"
      */
     private fun getFormatSequenceAfterDecimalSeparator(number: String): String {
-        val noOfCharactersAfterDecimalPoint =
-            number.length - number.indexOf(decimalFormatSymbols.decimalSeparator) - 1
-        val sequence = StringBuilder()
-        var i = 0
-        while (i < noOfCharactersAfterDecimalPoint && i < MAX_NO_OF_DECIMAL_PLACES) {
-            sequence.append("0")
-            i++
-        }
-        return sequence.toString()
+        val noOfCharactersAfterDecimalPoint = number.length - number.indexOf(decimalFormatSymbols.decimalSeparator) - 1
+        return "0".repeat(min(noOfCharactersAfterDecimalPoint, 2))
     }
 }
