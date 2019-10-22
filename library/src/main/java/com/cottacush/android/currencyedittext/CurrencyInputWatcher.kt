@@ -110,6 +110,6 @@ class CurrencyInputWatcher(
      */
     private fun getFormatSequenceAfterDecimalSeparator(number: String): String {
         val noOfCharactersAfterDecimalPoint = number.length - number.indexOf(decimalFormatSymbols.decimalSeparator) - 1
-        return "0".repeat(min(noOfCharactersAfterDecimalPoint, 2))
+        return "0".repeat(min(noOfCharactersAfterDecimalPoint, MAX_NO_OF_DECIMAL_PLACES))
     }
 }
