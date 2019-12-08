@@ -87,6 +87,17 @@ class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditTe
         ).toDouble()
     }
 
+    fun getNumericValueBigDecimal(): BigDecimal {
+        return BigDecimal(
+            parseMoneyValueWithLocale(
+                locale,
+                text.toString(),
+                textWatcher.decimalFormatSymbols.groupingSeparator.toString(),
+                currencySymbolPrefix
+            ).toString()
+        )
+    }
+
     override fun onFocusChanged(focused: Boolean, direction: Int, previouslyFocusedRect: Rect?) {
         super.onFocusChanged(focused, direction, previouslyFocusedRect)
         if (focused) {
