@@ -20,9 +20,11 @@ import android.graphics.Rect
 import android.os.Build
 import android.text.InputType
 import android.util.AttributeSet
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.google.android.material.textfield.TextInputEditText
-import java.util.Locale
+import java.math.BigDecimal
+import java.util.*
 
 class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditText(context, attrs) {
     private var currencySymbolPrefix = ""
@@ -49,7 +51,7 @@ class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditTe
         }
         if (!prefix.isNullOrBlank()) currencySymbolPrefix = "$prefix "
         if (useCurrencySymbolAsHint) hint = currencySymbolPrefix
-        if (isLollipopAndAbove() && !localeTag.isNullOrBlank()) locale = Locale.forLanguageTag(localeTag)
+        if (isLollipopAndAbove() && !localeTag.isNullOrBlank()) locale = getLocaleFromTag(localeTag!!)
         textWatcher = CurrencyInputWatcher(this, currencySymbolPrefix, locale)
     }
 
@@ -60,7 +62,7 @@ class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditTe
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun setLocale(localeTag: String) {
-        locale = Locale.forLanguageTag(localeTag)
+        locale = getLocaleFromTag(localeTag)
         invalidateTextWatcher()
     }
 
@@ -76,12 +78,13 @@ class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditTe
         addTextChangedListener(textWatcher)
     }
 
-    fun getNumericValue(): Double? {
-        return parseMoneyValue(
+    fun getNumericValue(): Double {
+        return parseMoneyValueWithLocale(
+            locale,
             text.toString(),
             textWatcher.decimalFormatSymbols.groupingSeparator.toString(),
             currencySymbolPrefix
-        ).toDoubleOrNull()
+        ).toDouble()
     }
 
     override fun onFocusChanged(focused: Boolean, direction: Int, previouslyFocusedRect: Rect?) {
@@ -95,6 +98,4 @@ class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditTe
             if (text.toString() == currencySymbolPrefix) setText("")
         }
     }
-
-    private fun isLollipopAndAbove(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
 }

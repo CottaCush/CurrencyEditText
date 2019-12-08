@@ -27,8 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
-            android:text="Name"
-            android:hint="name it "
+            android:hint="Enter a value"
             android:ems="10"
             android:id="@+id/editText2"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
@@ -49,7 +48,7 @@
             android:layout_marginStart="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
             app:layout_constraintVertical_bias="0.19999999"/>
     <Button
-            android:text="get value"
+            android:text="Get value"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/button" android:layout_marginTop="8dp"
