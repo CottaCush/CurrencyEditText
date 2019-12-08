@@ -20,7 +20,6 @@ import android.graphics.Rect
 import android.os.Build
 import android.text.InputType
 import android.util.AttributeSet
-import android.util.Log
 import androidx.annotation.RequiresApi
 import com.google.android.material.textfield.TextInputEditText
 import java.math.BigDecimal
