@@ -23,7 +23,7 @@ import java.util.*
 internal fun parseMoneyValue(value: String, groupingSeparator: String, currencySymbol: String): String =
     value.replace(groupingSeparator, "").replace(currencySymbol, "")
 
-fun parseMoneyValueWithLocale(
+internal fun parseMoneyValueWithLocale(
     locale: Locale,
     value: String,
     groupingSeparator: String,
