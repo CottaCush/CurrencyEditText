@@ -73,9 +73,13 @@ Numeric values for the editText can be gotten as shown below.
  ```kotlin
     currencyEditText.getNumericValue()
  ```
- 
+If you need a `BigDecimal` to continue your monetary calculations right away, you can get it by  
+ ```kotlin
+    currencyEditText.getNumericValueBigDecimal()
+ ```
+
 ## Using the formatter directly
- If you'd like to use the library with any `EditText` widget, you can attach your `EditText` with the `CurrencyInputWatcher` class:
+If you'd like to use the library with any `EditText` widget, you can attach your `EditText` with the `CurrencyInputWatcher` class:
   
  ```kotlin
     editText.addTextChangedListener(CurrencyInputWatcher(editText,"₦", Locale.getDefault()))
