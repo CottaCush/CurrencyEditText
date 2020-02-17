@@ -48,7 +48,7 @@ class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditTe
                 recycle()
             }
         }
-        currencySymbolPrefix = if(prefix.isBlank()) "" else "$prefix "
+        currencySymbolPrefix = if (prefix.isBlank()) "" else "$prefix "
         if (useCurrencySymbolAsHint) hint = currencySymbolPrefix
         if (isLollipopAndAbove() && !localeTag.isNullOrBlank()) locale = getLocaleFromTag(localeTag!!)
         textWatcher = CurrencyInputWatcher(this, currencySymbolPrefix, locale)
@@ -109,8 +109,6 @@ class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditTe
         }
     }
 
-
-    // currencySymbolPrefix returns null when onSelectionChanged is called first time.
     override fun onSelectionChanged(selStart: Int, selEnd: Int) {
         if (::currencySymbolPrefix.isInitialized.not()) return
         val symbolLength = currencySymbolPrefix.length
