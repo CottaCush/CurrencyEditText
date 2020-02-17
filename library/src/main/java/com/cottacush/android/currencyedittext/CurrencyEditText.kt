@@ -26,7 +26,7 @@ import java.math.BigDecimal
 import java.util.*
 
 class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditText(context, attrs) {
-    private var currencySymbolPrefix = ""
+    private lateinit var currencySymbolPrefix: String
     private var textWatcher: CurrencyInputWatcher
     private var locale: Locale = Locale.getDefault()
 
@@ -34,21 +34,17 @@ class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditTe
         var useCurrencySymbolAsHint = false
         inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
         var localeTag: String?
-        val prefix: String?
-        context.theme.obtainStyledAttributes(
-            attrs,
-            R.styleable.CurrencyEditText,
-            0, 0
-        ).run {
+        val prefix: String
+        context.theme.obtainStyledAttributes(attrs, R.styleable.CurrencyEditText, 0, 0).run {
             try {
-                prefix = getString(R.styleable.CurrencyEditText_currencySymbol)
+                prefix = getString(R.styleable.CurrencyEditText_currencySymbol).orEmpty()
                 localeTag = getString(R.styleable.CurrencyEditText_localeTag)
                 useCurrencySymbolAsHint = getBoolean(R.styleable.CurrencyEditText_useCurrencySymbolAsHint, false)
             } finally {
                 recycle()
             }
         }
-        if (!prefix.isNullOrBlank()) currencySymbolPrefix = "$prefix "
+        currencySymbolPrefix = if (prefix.isBlank().not()) "$prefix " else ""
         if (useCurrencySymbolAsHint) hint = currencySymbolPrefix
         if (isLollipopAndAbove() && !localeTag.isNullOrBlank()) locale = getLocaleFromTag(localeTag!!)
         textWatcher = CurrencyInputWatcher(this, currencySymbolPrefix, locale)
@@ -106,6 +102,17 @@ class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditTe
         } else {
             removeTextChangedListener(textWatcher)
             if (text.toString() == currencySymbolPrefix) setText("")
+        }
+    }
+
+    // currencySymbolPrefix returns null when onSelectionChanged .
+    override fun onSelectionChanged(selStart: Int, selEnd: Int) {
+        if (::currencySymbolPrefix.isInitialized.not()) return
+        val symbolLength = currencySymbolPrefix.length
+        if (selEnd < symbolLength && text.toString().length >= symbolLength) {
+            setSelection(symbolLength)
+        } else {
+            super.onSelectionChanged(selStart, selEnd)
         }
     }
 }
