@@ -21,7 +21,11 @@ import java.text.NumberFormat
 import java.text.ParseException
 import java.util.*
 
-internal fun parseMoneyValue(value: String, groupingSeparator: String, currencySymbol: String): String =
+internal fun parseMoneyValue(
+    value: String,
+    groupingSeparator: String,
+    currencySymbol: String
+): String =
     value.replace(groupingSeparator, "").replace(currencySymbol, "")
 
 internal fun parseMoneyValueWithLocale(
@@ -35,7 +39,7 @@ internal fun parseMoneyValueWithLocale(
     var parsedValue: Number
     try {
         parsedValue = NumberFormat.getInstance(locale).parse(valueWithoutSeparator)!!
-    } catch(exception : ParseException) {
+    } catch (exception: ParseException) {
         parsedValue = 0
     }
     return parsedValue
