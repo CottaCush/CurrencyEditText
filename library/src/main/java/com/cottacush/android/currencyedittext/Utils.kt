@@ -29,8 +29,9 @@ internal fun parseMoneyValueWithLocale(
     groupingSeparator: String,
     currencySymbol: String
 ): Number {
+    val filteredNumbers = value.filter { it.isDigit() }
     val valueWithoutSeparator = parseMoneyValue(value, groupingSeparator, currencySymbol)
-    return NumberFormat.getInstance(locale).parse(valueWithoutSeparator)!!
+    return if (filteredNumbers.isBlank()) 0 else NumberFormat.getInstance(locale).parse(valueWithoutSeparator)!!
 }
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
