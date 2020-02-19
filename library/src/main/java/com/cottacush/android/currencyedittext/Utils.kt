@@ -19,7 +19,8 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import java.text.NumberFormat
 import java.text.ParseException
-import java.util.*
+import java.util.Locale
+import java.util.IllformedLocaleException
 
 internal fun parseMoneyValue(
     value: String,
@@ -36,13 +37,11 @@ internal fun parseMoneyValueWithLocale(
 ): Number {
 
     val valueWithoutSeparator = parseMoneyValue(value, groupingSeparator, currencySymbol)
-    var parsedValue: Number
-    try {
-        parsedValue = NumberFormat.getInstance(locale).parse(valueWithoutSeparator)!!
+    return try {
+        NumberFormat.getInstance(locale).parse(valueWithoutSeparator)!!
     } catch (exception: ParseException) {
-        parsedValue = 0
+        0
     }
-    return parsedValue
 }
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
