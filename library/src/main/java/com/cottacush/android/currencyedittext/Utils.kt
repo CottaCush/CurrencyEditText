@@ -18,9 +18,15 @@ package com.cottacush.android.currencyedittext
 import android.os.Build
 import androidx.annotation.RequiresApi
 import java.text.NumberFormat
-import java.util.*
+import java.text.ParseException
+import java.util.Locale
+import java.util.IllformedLocaleException
 
-internal fun parseMoneyValue(value: String, groupingSeparator: String, currencySymbol: String): String =
+internal fun parseMoneyValue(
+    value: String,
+    groupingSeparator: String,
+    currencySymbol: String
+): String =
     value.replace(groupingSeparator, "").replace(currencySymbol, "")
 
 internal fun parseMoneyValueWithLocale(
@@ -29,8 +35,13 @@ internal fun parseMoneyValueWithLocale(
     groupingSeparator: String,
     currencySymbol: String
 ): Number {
+
     val valueWithoutSeparator = parseMoneyValue(value, groupingSeparator, currencySymbol)
-    return NumberFormat.getInstance(locale).parse(valueWithoutSeparator)!!
+    return try {
+        NumberFormat.getInstance(locale).parse(valueWithoutSeparator)!!
+    } catch (exception: ParseException) {
+        0
+    }
 }
 
 @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
