@@ -51,6 +51,7 @@ class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditTe
         if (useCurrencySymbolAsHint) hint = currencySymbolPrefix
         if (isLollipopAndAbove() && !localeTag.isNullOrBlank()) locale = Locale.forLanguageTag(localeTag)
         textWatcher = CurrencyInputWatcher(this, currencySymbolPrefix, locale)
+        addTextChangedListener(textWatcher)
     }
 
     fun setLocale(locale: Locale) {
