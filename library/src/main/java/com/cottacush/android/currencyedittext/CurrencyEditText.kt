@@ -22,10 +22,11 @@ import android.text.InputType
 import android.util.AttributeSet
 import androidx.annotation.RequiresApi
 import com.google.android.material.textfield.TextInputEditText
-import java.util.Locale
+import java.math.BigDecimal
+import java.util.*
 
 class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditText(context, attrs) {
-    private var currencySymbolPrefix = ""
+    private lateinit var currencySymbolPrefix: String
     private var textWatcher: CurrencyInputWatcher
     private var locale: Locale = Locale.getDefault()
 
@@ -33,23 +34,23 @@ class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditTe
         var useCurrencySymbolAsHint = false
         inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
         var localeTag: String?
-        val prefix: String?
+        val prefix: String
         context.theme.obtainStyledAttributes(
             attrs,
             R.styleable.CurrencyEditText,
             0, 0
         ).run {
             try {
-                prefix = getString(R.styleable.CurrencyEditText_currencySymbol)
+                prefix = getString(R.styleable.CurrencyEditText_currencySymbol).orEmpty()
                 localeTag = getString(R.styleable.CurrencyEditText_localeTag)
                 useCurrencySymbolAsHint = getBoolean(R.styleable.CurrencyEditText_useCurrencySymbolAsHint, false)
             } finally {
                 recycle()
             }
         }
-        if (!prefix.isNullOrBlank()) currencySymbolPrefix = "$prefix "
+        currencySymbolPrefix = if (prefix.isBlank()) "" else "$prefix "
         if (useCurrencySymbolAsHint) hint = currencySymbolPrefix
-        if (isLollipopAndAbove() && !localeTag.isNullOrBlank()) locale = Locale.forLanguageTag(localeTag)
+        if (isLollipopAndAbove() && !localeTag.isNullOrBlank()) locale = getLocaleFromTag(localeTag!!)
         textWatcher = CurrencyInputWatcher(this, currencySymbolPrefix, locale)
         addTextChangedListener(textWatcher)
     }
@@ -61,7 +62,7 @@ class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditTe
 
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     fun setLocale(localeTag: String) {
-        locale = Locale.forLanguageTag(localeTag)
+        locale = getLocaleFromTag(localeTag)
         invalidateTextWatcher()
     }
 
@@ -77,12 +78,24 @@ class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditTe
         addTextChangedListener(textWatcher)
     }
 
-    fun getNumericValue(): Double? {
-        return parseMoneyValue(
+    fun getNumericValue(): Double {
+        return parseMoneyValueWithLocale(
+            locale,
             text.toString(),
             textWatcher.decimalFormatSymbols.groupingSeparator.toString(),
             currencySymbolPrefix
-        ).toDoubleOrNull()
+        ).toDouble()
+    }
+
+    fun getNumericValueBigDecimal(): BigDecimal {
+        return BigDecimal(
+            parseMoneyValueWithLocale(
+                locale,
+                text.toString(),
+                textWatcher.decimalFormatSymbols.groupingSeparator.toString(),
+                currencySymbolPrefix
+            ).toString()
+        )
     }
 
     override fun setText(text: CharSequence?, type: BufferType?) {
@@ -102,5 +115,13 @@ class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditTe
         }
     }
 
-    private fun isLollipopAndAbove(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+    override fun onSelectionChanged(selStart: Int, selEnd: Int) {
+        if (::currencySymbolPrefix.isInitialized.not()) return
+        val symbolLength = currencySymbolPrefix.length
+        if (selEnd < symbolLength && text.toString().length >= symbolLength) {
+            setSelection(symbolLength)
+        } else {
+            super.onSelectionChanged(selStart, selEnd)
+        }
+    }
 }

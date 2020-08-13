@@ -25,6 +25,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        button.setOnClickListener { textView.text = editText.getNumericValue().toString() }
+        button.setOnClickListener { textView.text = "${editText.getNumericValue()}" }
     }
 }
