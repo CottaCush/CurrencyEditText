@@ -13,7 +13,7 @@ A library to dynamically format your `EditTexts` to take currency inputs.
 Add the dependency to your app's `build.gradle`:
 
 ```groovy
-implementation 'com.cottacush:CurrencyEditText:0.0.6'
+implementation 'com.cottacush:CurrencyEditText:0.0.7'
 ```
 
 ## Usage
