@@ -52,6 +52,7 @@ class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditTe
         if (useCurrencySymbolAsHint) hint = currencySymbolPrefix
         if (isLollipopAndAbove() && !localeTag.isNullOrBlank()) locale = getLocaleFromTag(localeTag!!)
         textWatcher = CurrencyInputWatcher(this, currencySymbolPrefix, locale)
+        addTextChangedListener(textWatcher)
     }
 
     fun setLocale(locale: Locale) {
@@ -95,6 +96,11 @@ class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditTe
                 currencySymbolPrefix
             ).toString()
         )
+    }
+
+    override fun setText(text: CharSequence?, type: BufferType?) {
+        super.setText(text, type)
+        getText()?.length?.let { setSelection(it) }
     }
 
     override fun onFocusChanged(focused: Boolean, direction: Int, previouslyFocusedRect: Rect?) {
