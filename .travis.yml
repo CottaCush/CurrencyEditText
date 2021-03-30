@@ -12,3 +12,6 @@ android:
 
   licenses:
     - '.+'
+
+script:
+  - ./gradlew test
