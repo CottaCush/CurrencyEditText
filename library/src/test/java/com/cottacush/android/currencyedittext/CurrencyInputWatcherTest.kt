@@ -239,5 +239,4 @@ class CurrencyInputWatcherTest {
 
         verify(editText, times(1)).setText(expectedText)
     }
-
 }
