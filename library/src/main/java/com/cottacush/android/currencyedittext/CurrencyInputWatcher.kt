@@ -19,6 +19,7 @@ import android.annotation.SuppressLint
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
+import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
@@ -41,9 +42,12 @@ class CurrencyInputWatcher(
     private val wholeNumberDecimalFormat =
         (NumberFormat.getNumberInstance(locale) as DecimalFormat).apply {
             applyPattern("#,##0")
+            roundingMode = RoundingMode.DOWN
         }
 
-    private val fractionDecimalFormat = (NumberFormat.getNumberInstance(locale) as DecimalFormat)
+    private val fractionDecimalFormat = (NumberFormat.getNumberInstance(locale) as DecimalFormat).apply {
+        roundingMode = RoundingMode.DOWN
+    }
 
     val decimalFormatSymbols: DecimalFormatSymbols
         get() = wholeNumberDecimalFormat.decimalFormatSymbols
