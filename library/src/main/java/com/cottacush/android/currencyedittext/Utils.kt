@@ -54,3 +54,14 @@ internal fun getLocaleFromTag(localeTag: String): Locale {
 }
 
 internal fun isLollipopAndAbove(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+
+internal fun String.keepOnlyOneOccurrenceOfCharacter(char: Char): String {
+    var string = this
+    var firstPosition = this.indexOf(char)
+    if (firstPosition == -1) return string
+
+    for (i in lastIndex downTo firstPosition+1) {
+        if (this[i] == char) string = removeRange(i..i)
+    }
+    return string
+}

@@ -41,6 +41,20 @@ class CurrencyInputWatcherTest {
     }
 
     @Test
+    fun `Should_keepCurrencySymbolAsHintWhenEnabledAndMoveCursorToFront_when_editTextIsSetToEmptyString`() {
+        val currentEditTextContent = ""
+        val expectedText = "$ "
+        val expectedCursorPosition = expectedText.length
+
+        `when`(editable.toString()).thenReturn(currentEditTextContent)
+
+        watcher.runAllWatcherMethods(editable)
+
+        verify(editText, times(1)).setText(expectedText)
+        verify(editText, times(1)).setSelection(expectedCursorPosition)
+    }
+
+    @Test
     fun `Should_setTextTo "$ 5" _when_textIsSetTo "5"`() {
         val currentEditTextContent = "5"
         val expectedText = "$ 5"
@@ -200,20 +214,6 @@ class CurrencyInputWatcherTest {
         watcher.runAllWatcherMethods(editable)
 
         verify(editText, times(1)).setText(expectedText)
-    }
-
-    @Test
-    fun `Should_keepCurrencySymbolAsHintWhenEnabledAndMoveCursorToFront_when_editTextIsSetToEmptyString`() {
-        val currentEditTextContent = ""
-        val expectedText = "$ "
-        val expectedCursorPosition = expectedText.length
-
-        `when`(editable.toString()).thenReturn(currentEditTextContent)
-
-        watcher.runAllWatcherMethods(editable)
-
-        verify(editText, times(1)).setText(expectedText)
-        verify(editText, times(1)).setSelection(expectedCursorPosition)
     }
 
     @Test

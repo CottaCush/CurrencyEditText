@@ -19,6 +19,7 @@ import android.annotation.SuppressLint
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
+import java.lang.Exception
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
@@ -62,8 +63,15 @@ class CurrencyInputWatcher(
 
     @SuppressLint("SetTextI18n")
     override fun afterTextChanged(s: Editable) {
-        val newInputString = s.toString()
-        if (newInputString.length < currencySymbol.length) {
+        var newInputString = s.toString()
+        val isParsableString = try {
+            newInputString.toBigDecimal()
+            true
+        } catch (e: Exception) {
+            false
+        }
+
+        if (newInputString.length < currencySymbol.length && !isParsableString) {
             editText.setText(currencySymbol)
             editText.setSelection(currencySymbol.length)
             return
@@ -77,12 +85,16 @@ class CurrencyInputWatcher(
         editText.removeTextChangedListener(this)
         val startLength = editText.text.length
         try {
-            val numberWithoutGroupingSeparator =
+            var numberWithoutGroupingSeparator =
                 parseMoneyValue(
                     newInputString,
                     decimalFormatSymbols.groupingSeparator.toString(),
                     currencySymbol
                 )
+            if (numberWithoutGroupingSeparator == decimalFormatSymbols.decimalSeparator.toString()) {
+                numberWithoutGroupingSeparator = "0$numberWithoutGroupingSeparator"
+            }
+            numberWithoutGroupingSeparator = numberWithoutGroupingSeparator.keepOnlyOneOccurrenceOfCharacter(decimalFormatSymbols.decimalSeparator)
             val parsedNumber = numberWithoutGroupingSeparator.toBigDecimal()
             val selectionStartIndex = editText.selectionStart
             if (hasDecimalPoint) {
@@ -101,7 +113,7 @@ class CurrencyInputWatcher(
             } else {
                 editText.setSelection(editText.text.length - 1)
             }
-        } catch (e: ParseException) {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
         editText.addTextChangedListener(this)
