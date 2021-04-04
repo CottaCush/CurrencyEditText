@@ -83,7 +83,7 @@ class CurrencyInputWatcher(
                     decimalFormatSymbols.groupingSeparator.toString(),
                     currencySymbol
                 )
-            val parsedNumber = fractionDecimalFormat.parse(numberWithoutGroupingSeparator)!!
+            val parsedNumber = numberWithoutGroupingSeparator.toBigDecimal()
             val selectionStartIndex = editText.selectionStart
             if (hasDecimalPoint) {
                 fractionDecimalFormat.applyPattern(
