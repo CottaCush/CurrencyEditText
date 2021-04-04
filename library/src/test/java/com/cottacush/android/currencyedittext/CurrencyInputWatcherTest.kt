@@ -239,4 +239,9 @@ class CurrencyInputWatcherTest {
 
         verify(editText, times(1)).setText(expectedText)
     }
+
+    @Test
+    fun `Should_do_when_this`() {
+
+    }
 }
