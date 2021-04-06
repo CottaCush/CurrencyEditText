@@ -64,7 +64,7 @@ class CurrencyInputWatcher(
     override fun afterTextChanged(s: Editable) {
         var newInputString = s.toString()
         val isParsableString = try {
-            newInputString.toBigDecimal()
+            fractionDecimalFormat.parse(newInputString)!!
             true
         } catch (e: Exception) {
             false

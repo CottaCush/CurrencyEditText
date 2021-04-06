@@ -16,7 +16,6 @@
 package com.cottacush.android.currencyedittext
 
 import android.text.Editable
-import android.util.Log
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
