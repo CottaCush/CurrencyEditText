@@ -16,6 +16,7 @@
 package com.cottacush.android.currencyedittext
 
 import android.text.Editable
+import android.util.Log
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -23,14 +24,14 @@ import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import java.util.*
 
-class CurrencyInputWatcherTest {
+class CurrencyInputWatcherTest_enNG {
 
     @Mock private lateinit var editText: CurrencyEditText
     @Mock private lateinit var editable: Editable
 
     private lateinit var watcher: CurrencyInputWatcher
     private val currencySymbol = "$ "
-    private val locale = Locale("en-US")
+    private val locale = Locale.Builder().setLanguageTag("en-NG").build()
 
     @Before
     fun setUp() {
@@ -238,10 +239,5 @@ class CurrencyInputWatcherTest {
         watcher.runAllWatcherMethods(editable)
 
         verify(editText, times(1)).setText(expectedText)
-    }
-
-    @Test
-    fun `Should_do_when_this`() {
-
     }
 }
