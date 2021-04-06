@@ -24,7 +24,6 @@ import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
-import java.text.ParseException
 import java.util.Locale
 import kotlin.math.min
 
@@ -94,7 +93,7 @@ class CurrencyInputWatcher(
             if (numberWithoutGroupingSeparator == decimalFormatSymbols.decimalSeparator.toString()) {
                 numberWithoutGroupingSeparator = "0$numberWithoutGroupingSeparator"
             }
-            val parsedNumber = numberWithoutGroupingSeparator.toBigDecimal()
+            val parsedNumber = fractionDecimalFormat.parse(numberWithoutGroupingSeparator)!!
             val selectionStartIndex = editText.selectionStart
             if (hasDecimalPoint) {
                 fractionDecimalFormat.applyPattern(
