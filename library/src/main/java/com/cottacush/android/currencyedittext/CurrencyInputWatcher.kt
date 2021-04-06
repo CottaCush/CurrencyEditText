@@ -94,7 +94,6 @@ class CurrencyInputWatcher(
             if (numberWithoutGroupingSeparator == decimalFormatSymbols.decimalSeparator.toString()) {
                 numberWithoutGroupingSeparator = "0$numberWithoutGroupingSeparator"
             }
-            numberWithoutGroupingSeparator = numberWithoutGroupingSeparator.keepOnlyOneOccurrenceOfCharacter(decimalFormatSymbols.decimalSeparator)
             val parsedNumber = numberWithoutGroupingSeparator.toBigDecimal()
             val selectionStartIndex = editText.selectionStart
             if (hasDecimalPoint) {

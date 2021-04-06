@@ -108,7 +108,7 @@ class CurrencyInputWatcherTest_frCA {
     }
 
     @Test
-    fun `Should_setTextTo "$ 15 420,50" _when_textIsSetTo "15420point50"`() {
+    fun `Should_setTextTo "$ 15 420,50" _when_textIsSetTo "15420,50"`() {
         val currentEditTextContent = "15420,50"
         val expectedText = "$ 15 420,50"
 
