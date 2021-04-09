@@ -23,7 +23,7 @@ import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import java.util.*
 
-class CurrencyInputWatcherTest_enNG {
+class CurrencyInputWatcherTest {
 
     @Mock private lateinit var editText: CurrencyEditText
     @Mock private lateinit var editable: Editable
@@ -41,7 +41,7 @@ class CurrencyInputWatcherTest_enNG {
     }
 
     @Test
-    fun `Should_keepCurrencySymbolAsHintWhenEnabledAndMoveCursorToFront_when_editTextIsSetToEmptyString`() {
+    fun `Should keep currency symbol as hint when enabled and move cursor to front when edit text is set to empty string`() {
         val currentEditTextContent = ""
         val expectedText = "$ "
         val expectedCursorPosition = expectedText.length
@@ -55,7 +55,7 @@ class CurrencyInputWatcherTest_enNG {
     }
 
     @Test
-    fun `Should_setTextTo "$ 5" _when_textIsSetTo "5"`() {
+    fun `Should set text To "$ 5" when text is set to "5"`() {
         val currentEditTextContent = "5"
         val expectedText = "$ 5"
 
@@ -68,7 +68,7 @@ class CurrencyInputWatcherTest_enNG {
     }
 
     @Test
-    fun `Should_setTextTo "$ 40" _when_textIsSetTo "40"`() {
+    fun `Should set text to "$ 40" when text is set to "40"`() {
         val currentEditTextContent = "40"
         val expectedText = "$ 40"
 
@@ -81,7 +81,7 @@ class CurrencyInputWatcherTest_enNG {
     }
 
     @Test
-    fun `Should_setTextTo "$ 900" _when_textIsSetTo "900"`() {
+    fun `Should set text to "$ 900" when text is set to "900"`() {
         val currentEditTextContent = "900"
         val expectedText = "$ 900"
 
@@ -94,7 +94,7 @@ class CurrencyInputWatcherTest_enNG {
     }
 
     @Test
-    fun `Should_setTextTo "$ 1,000" _when_textIsSetTo "1000"`() {
+    fun `Should set text to "$ 1,000" when text is set to "1000"`() {
         val currentEditTextContent = "1000"
         val expectedText = "$ 1,000"
 
@@ -107,7 +107,7 @@ class CurrencyInputWatcherTest_enNG {
     }
 
     @Test
-    fun `Should_setTextTo "$ 15,420point50" _when_textIsSetTo "15420point50"`() {
+    fun `Should set text to "$ 15,420point50" when text is set to "15420point50"`() {
         val currentEditTextContent = "15420.50"
         val expectedText = "$ 15,420.50"
 
@@ -120,7 +120,7 @@ class CurrencyInputWatcherTest_enNG {
     }
 
     @Test
-    fun `Should_keepTheDecimalSymbol_when_theEditTextDoesNotContainADecimalSymbolBeforeAndItIsClicked`() {
+    fun `Should keep the decimal symbol when the edit text does not contain a decimal symbol before and it is clicked`() {
         val currentEditTextContent = "$ 1,000"
         val expectedText = "$ 1,000."
 
@@ -133,7 +133,7 @@ class CurrencyInputWatcherTest_enNG {
     }
 
     @Test
-    fun `Should_setTextTo "$ 10,002" _when_previousTextIs "$ 1,000" and "2" isClicked`() {
+    fun `Should set text to "$ 10,002" when previous text is "$ 1,000" and "2" is clicked`() {
         val currentEditTextContent = "$ 1,000"
         val expectedText = "$ 10,002"
 
@@ -145,7 +145,7 @@ class CurrencyInputWatcherTest_enNG {
     }
 
     @Test
-    fun `Should_automaticallyAppendAZeroToTheDecimalSeparator _when_theEditTextIsEmptyAndTheDecimalOperatorIsClicked`() {
+    fun `Should automatically append a zero to the decimal separator when the edit text is empty and the decimal operator is clicked`() {
         val currentEditTextContent = "$ "
         val expectedText = "$ 0."
 
@@ -157,7 +157,7 @@ class CurrencyInputWatcherTest_enNG {
     }
 
     @Test
-    fun `Should_keepTheSingleDecimalDigit_when_thereAreNoDecimalDigitsAndADigitIsAddedAfterTheDecimalSymbol`() {
+    fun `Should keep the single decimal digit when there are no decimal digits and a digit is added after the decimal symbol`() {
         val currentEditTextContent = "$ 1,320."
         val expectedText = "$ 1,320.5"
 
@@ -169,7 +169,7 @@ class CurrencyInputWatcherTest_enNG {
     }
 
     @Test
-    fun `Should_keepTwoDecimalDigits_when_thereIsOneDecimalDigitAndADigitIsAddedAfterTheDecimalSymbol`() {
+    fun `Should keep two decimal digits when there is one decimal digit and a digit is added after the decimal symbol`() {
         val currentEditTextContent = "$ 1,320.5"
         val expectedText = "$ 1,320.50"
 
@@ -181,7 +181,7 @@ class CurrencyInputWatcherTest_enNG {
     }
 
     @Test
-    fun `Should_keepTheCurrentTextAsIs_when_thereIsTwoDecimalDigitAndADigitIsAddedAfterTheDecimalSymbol`() {
+    fun `Should keep the current text as is when there are two decimal digits and a digit is added after the decimal symbol`() {
         val currentEditTextContent = "$ 1,320.50"
         val expectedText = "$ 1,320.50"
 
@@ -193,7 +193,7 @@ class CurrencyInputWatcherTest_enNG {
     }
 
     @Test
-    fun `Should_keepTheCurrentTextAsIs_when_thereIsTwoDecimalDigitAndMultipleDigitsAreAddedAfterTheDecimalSymbol`() {
+    fun `Should keep the current text as is when there is two decimal digit and multiple digits are added after the decimal symbol`() {
         val currentEditTextContent = "$ 1,320.50"
         val expectedText = "$ 1,320.50"
 
@@ -205,7 +205,7 @@ class CurrencyInputWatcherTest_enNG {
     }
 
     @Test
-    fun `Should_keepOnlyOneDecimalSymbol_when_aDecimalSymbolIsPresentAndItIsClickedAgain`() {
+    fun `Should keep only one decimal symbol when a decimal symbol is present and it is clicked again`() {
         val currentEditTextContent = "$ 1,320.50"
         val expectedText = "$ 1,320.50"
 
@@ -217,7 +217,7 @@ class CurrencyInputWatcherTest_enNG {
     }
 
     @Test
-    fun `Should_notAllowADelete_when_editTextIsSetToCurrencySymbolAndADeleteIsClicked`() {
+    fun `Should not allow a delete when edit text is set to currency symbol and a delete is clicked`() {
         val currentEditTextContent = "$ "
         val expectedText = "$ "
 
@@ -229,7 +229,7 @@ class CurrencyInputWatcherTest_enNG {
     }
 
     @Test
-    fun `Should_notAllowADelete_when_editTextIsSetToCurrencySymbolAndADeleteIsClickedAtTheZerothIndex`() {
+    fun `Should not allow a delete when edit text is set to currency symbol and a delete is clicked at the zeroth index`() {
         val currentEditTextContent = "$ "
         val expectedText = "$ "
 
