@@ -19,11 +19,11 @@ import android.annotation.SuppressLint
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
-import java.lang.Exception
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
+import java.text.ParseException
 import java.util.Locale
 import kotlin.math.min
 
@@ -66,7 +66,7 @@ class CurrencyInputWatcher(
         val isParsableString = try {
             fractionDecimalFormat.parse(newInputString)!!
             true
-        } catch (e: Exception) {
+        } catch (e: ParseException) {
             false
         }
 
@@ -90,9 +90,9 @@ class CurrencyInputWatcher(
                     decimalFormatSymbols.groupingSeparator.toString(),
                     currencySymbol
                 )
-            if (numberWithoutGroupingSeparator == decimalFormatSymbols.decimalSeparator.toString()) {
-                numberWithoutGroupingSeparator = "0$numberWithoutGroupingSeparator"
-            }
+//            if (numberWithoutGroupingSeparator == decimalFormatSymbols.decimalSeparator.toString()) {
+//                numberWithoutGroupingSeparator = "0$numberWithoutGroupingSeparator"
+//            }
             val parsedNumber = fractionDecimalFormat.parse(numberWithoutGroupingSeparator)!!
             val selectionStartIndex = editText.selectionStart
             if (hasDecimalPoint) {
@@ -111,7 +111,7 @@ class CurrencyInputWatcher(
             } else {
                 editText.setSelection(editText.text.length - 1)
             }
-        } catch (e: Exception) {
+        } catch (e: ParseException) {
             e.printStackTrace()
         }
         editText.addTextChangedListener(this)
