@@ -90,9 +90,9 @@ class CurrencyInputWatcher(
                     decimalFormatSymbols.groupingSeparator.toString(),
                     currencySymbol
                 )
-//            if (numberWithoutGroupingSeparator == decimalFormatSymbols.decimalSeparator.toString()) {
-//                numberWithoutGroupingSeparator = "0$numberWithoutGroupingSeparator"
-//            }
+            if (numberWithoutGroupingSeparator == decimalFormatSymbols.decimalSeparator.toString()) {
+                numberWithoutGroupingSeparator = "0$numberWithoutGroupingSeparator"
+            }
             val parsedNumber = fractionDecimalFormat.parse(numberWithoutGroupingSeparator)!!
             val selectionStartIndex = editText.selectionStart
             if (hasDecimalPoint) {
