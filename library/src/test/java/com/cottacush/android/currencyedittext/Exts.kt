@@ -17,6 +17,9 @@ package com.cottacush.android.currencyedittext
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.EditText
+import com.cottacush.android.currencyedittext.model.LocaleVars
+import java.util.*
 
 fun TextWatcher.runAllWatcherMethods(
     s: Editable,
@@ -35,3 +38,7 @@ fun String.removeCharAt(i: Int) = removeRange(i..i)
 fun String.removeLastChar() = removeCharAt(length - 1)
 
 fun String.removeFirstChar() = removeCharAt(0)
+
+fun String.toLocale(): Locale = Locale.Builder().setLanguageTag(this).build()
+
+fun LocaleVars.toWatcher(editText: EditText) = CurrencyInputWatcher(editText, currencySymbol, tag.toLocale())

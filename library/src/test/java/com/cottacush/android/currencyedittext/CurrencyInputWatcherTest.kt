@@ -16,227 +16,279 @@
 package com.cottacush.android.currencyedittext
 
 import android.text.Editable
-import org.junit.Before
+import com.cottacush.android.currencyedittext.model.LocaleVars
 import org.junit.Test
-import org.mockito.Mock
 import org.mockito.Mockito.*
-import org.mockito.MockitoAnnotations
-import java.util.*
 
 class CurrencyInputWatcherTest {
 
-    @Mock private lateinit var editText: CurrencyEditText
-    @Mock private lateinit var editable: Editable
-
-    private lateinit var watcher: CurrencyInputWatcher
-    private val currencySymbol = "$ "
-    private val locale = Locale.Builder().setLanguageTag("en-NG").build()
-
-    @Before
-    fun setUp() {
-        MockitoAnnotations.openMocks(this)
-        watcher = CurrencyInputWatcher(editText, currencySymbol, locale)
-        `when`(editText.text).thenReturn(editable)
-        `when`(editable.append(isA(String::class.java))).thenReturn(editable)
-    }
+    private val locales = listOf(
+            LocaleVars("en-NG", '.', ',', "$ "),
+            LocaleVars("da-DK", ',', '.', "$ "),
+            LocaleVars("fr-CA", ',', ' ', "$ ")
+    )
 
     @Test
     fun `Should keep currency symbol as hint when enabled and move cursor to front when edit text is set to empty string`() {
-        val currentEditTextContent = ""
-        val expectedText = "$ "
-        val expectedCursorPosition = expectedText.length
+        for (locale in locales) {
+            val currentEditTextContent = ""
+            val expectedText = locale.currencySymbol
+            val expectedCursorPosition = expectedText.length
 
-        `when`(editable.toString()).thenReturn(currentEditTextContent)
+            val (editText, editable, watcher) = setupTestVariables(locale)
+            `when`(editable.toString()).thenReturn(currentEditTextContent)
 
-        watcher.runAllWatcherMethods(editable)
+            watcher.runAllWatcherMethods(editable)
 
-        verify(editText, times(1)).setText(expectedText)
-        verify(editText, times(1)).setSelection(expectedCursorPosition)
+            verify(editText, times(1)).setText(expectedText)
+            verify(editText, times(1)).setSelection(expectedCursorPosition)
+        }
     }
 
     @Test
     fun `Should set text To "$ 5" when text is set to "5"`() {
-        val currentEditTextContent = "5"
-        val expectedText = "$ 5"
+        for (locale in locales) {
+            val currentEditTextContent = "5"
+            val expectedText = "${locale.currencySymbol}5"
 
-        `when`(editable.toString()).thenReturn(currentEditTextContent)
+            val (editText, editable, watcher) = setupTestVariables(locale)
+            `when`(editable.toString()).thenReturn(currentEditTextContent)
 
-        watcher.runAllWatcherMethods(editable)
+            watcher.runAllWatcherMethods(editable)
 
-        // Verify that the EditText's text was set to the expected text
-        verify(editText, times(1)).setText(expectedText)
+            // Verify that the EditText's text was set to the expected text
+            verify(editText, times(1)).setText(expectedText)
+        }
     }
 
     @Test
     fun `Should set text to "$ 40" when text is set to "40"`() {
-        val currentEditTextContent = "40"
-        val expectedText = "$ 40"
+        for (locale in locales) {
+            val currentEditTextContent = "40"
+            val expectedText = "${locale.currencySymbol}40"
 
-        `when`(editable.toString()).thenReturn(currentEditTextContent)
+            val (editText, editable, watcher) = setupTestVariables(locale)
+            `when`(editable.toString()).thenReturn(currentEditTextContent)
 
-        watcher.runAllWatcherMethods(editable)
+            watcher.runAllWatcherMethods(editable)
 
-        // Verify that the EditText's text was set to the expected text
-        verify(editText, times(1)).setText(expectedText)
+            // Verify that the EditText's text was set to the expected text
+            verify(editText, times(1)).setText(expectedText)
+        }
     }
 
     @Test
     fun `Should set text to "$ 900" when text is set to "900"`() {
-        val currentEditTextContent = "900"
-        val expectedText = "$ 900"
+        for (locale in locales) {
+            val currentEditTextContent = "900"
+            val expectedText = "${locale.currencySymbol}900"
 
-        `when`(editable.toString()).thenReturn(currentEditTextContent)
+            val (editText, editable, watcher) = setupTestVariables(locale)
+            `when`(editable.toString()).thenReturn(currentEditTextContent)
 
-        watcher.runAllWatcherMethods(editable)
+            watcher.runAllWatcherMethods(editable)
 
-        // Verify that the EditText's text was set to the expected text
-        verify(editText, times(1)).setText(expectedText)
+            // Verify that the EditText's text was set to the expected text
+            verify(editText, times(1)).setText(expectedText)
+        }
     }
 
     @Test
     fun `Should set text to "$ 1,000" when text is set to "1000"`() {
-        val currentEditTextContent = "1000"
-        val expectedText = "$ 1,000"
+        for (locale in locales) {
+            val currentEditTextContent = "1000"
+            val expectedText = "${locale.currencySymbol}1${locale.groupingSeparator}000"
 
-        `when`(editable.toString()).thenReturn(currentEditTextContent)
+            val (editText, editable, watcher) = setupTestVariables(locale)
+            `when`(editable.toString()).thenReturn(currentEditTextContent)
 
-        watcher.runAllWatcherMethods(editable)
+            watcher.runAllWatcherMethods(editable)
 
-        // Verify that the EditText's text was set to the expected text
-        verify(editText, times(1)).setText(expectedText)
+            // Verify that the EditText's text was set to the expected text
+            verify(editText, times(1)).setText(expectedText)
+        }
     }
 
     @Test
     fun `Should set text to "$ 15,420point50" when text is set to "15420point50"`() {
-        val currentEditTextContent = "15420.50"
-        val expectedText = "$ 15,420.50"
+        for (locale in locales) {
+            val currentEditTextContent = "15420${locale.decimalSeparator}50"
+            val expectedText = "${locale.currencySymbol}15${locale.groupingSeparator}420${locale.decimalSeparator}50"
 
-        `when`(editable.toString()).thenReturn(currentEditTextContent)
+            val (editText, editable, watcher) = setupTestVariables(locale)
+            `when`(editable.toString()).thenReturn(currentEditTextContent)
 
-        watcher.runAllWatcherMethods(editable)
+            watcher.runAllWatcherMethods(editable)
 
-        // Verify that the EditText's text was set to the expected text
-        verify(editText, times(1)).setText(expectedText)
+            // Verify that the EditText's text was set to the expected text
+            verify(editText, times(1)).setText(expectedText)
+        }
     }
 
     @Test
     fun `Should keep the decimal symbol when the edit text does not contain a decimal symbol before and it is clicked`() {
-        val currentEditTextContent = "$ 1,000"
-        val expectedText = "$ 1,000."
+        for (locale in locales) {
+            val currentEditTextContent = "${locale.currencySymbol}1${locale.groupingSeparator}000"
+            val expectedText = "${locale.currencySymbol}1${locale.groupingSeparator}000${locale.decimalSeparator}"
 
-        `when`(editable.toString()).thenReturn(currentEditTextContent + ".")
+            val (editText, editable, watcher) = setupTestVariables(locale)
+            `when`(editable.toString()).thenReturn(currentEditTextContent + locale.decimalSeparator)
 
-        watcher.runAllWatcherMethods(editable)
+            watcher.runAllWatcherMethods(editable)
 
-        // Verify that the EditText's text was set to the expected text
-        verify(editText, times(1)).setText(expectedText)
+            // Verify that the EditText's text was set to the expected text
+            verify(editText, times(1)).setText(expectedText)
+        }
     }
 
     @Test
     fun `Should set text to "$ 10,002" when previous text is "$ 1,000" and "2" is clicked`() {
-        val currentEditTextContent = "$ 1,000"
-        val expectedText = "$ 10,002"
+        for (locale in locales) {
+            val currentEditTextContent = "${locale.currencySymbol}1${locale.groupingSeparator}000"
+            val expectedText = "${locale.currencySymbol}10${locale.groupingSeparator}002"
 
-        `when`(editable.toString()).thenReturn(currentEditTextContent + "2")
+            val (editText, editable, watcher) = setupTestVariables(locale)
+            `when`(editable.toString()).thenReturn(currentEditTextContent + "2")
 
-        watcher.runAllWatcherMethods(editable)
+            watcher.runAllWatcherMethods(editable)
 
-        verify(editText, times(1)).setText(expectedText)
+            verify(editText, times(1)).setText(expectedText)
+        }
     }
 
     @Test
     fun `Should automatically append a zero to the decimal separator when the edit text is empty and the decimal operator is clicked`() {
-        val currentEditTextContent = "$ "
-        val expectedText = "$ 0."
+        for (locale in locales) {
+            val currentEditTextContent = locale.currencySymbol
+            val expectedText = "${locale.currencySymbol}0${locale.decimalSeparator}"
 
-        `when`(editable.toString()).thenReturn(currentEditTextContent + ".")
+            val (editText, editable, watcher) = setupTestVariables(locale)
+            `when`(editable.toString()).thenReturn(currentEditTextContent + locale.decimalSeparator)
 
-        watcher.runAllWatcherMethods(editable)
+            watcher.runAllWatcherMethods(editable)
 
-        verify(editText, times(1)).setText(expectedText)
+            verify(editText, times(1)).setText(expectedText)
+        }
     }
 
     @Test
     fun `Should keep the single decimal digit when there are no decimal digits and a digit is added after the decimal symbol`() {
-        val currentEditTextContent = "$ 1,320."
-        val expectedText = "$ 1,320.5"
+        for (locale in locales) {
+            val currentEditTextContent = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}"
+            val expectedText = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}5"
 
-        `when`(editable.toString()).thenReturn(currentEditTextContent + "5")
+            val (editText, editable, watcher) = setupTestVariables(locale)
+            `when`(editable.toString()).thenReturn(currentEditTextContent + "5")
 
-        watcher.runAllWatcherMethods(editable)
+            watcher.runAllWatcherMethods(editable)
 
-        verify(editText, times(1)).setText(expectedText)
+            verify(editText, times(1)).setText(expectedText)
+        }
     }
 
     @Test
     fun `Should keep two decimal digits when there is one decimal digit and a digit is added after the decimal symbol`() {
-        val currentEditTextContent = "$ 1,320.5"
-        val expectedText = "$ 1,320.50"
+        for (locale in locales) {
+            val currentEditTextContent = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}5"
+            val expectedText = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}50"
 
-        `when`(editable.toString()).thenReturn(currentEditTextContent + "0")
+            val (editText, editable, watcher) = setupTestVariables(locale)
+            `when`(editable.toString()).thenReturn(currentEditTextContent + "0")
 
-        watcher.runAllWatcherMethods(editable)
+            watcher.runAllWatcherMethods(editable)
 
-        verify(editText, times(1)).setText(expectedText)
+            verify(editText, times(1)).setText(expectedText)
+        }
     }
 
     @Test
     fun `Should keep the current text as is when there are two decimal digits and a digit is added after the decimal symbol`() {
-        val currentEditTextContent = "$ 1,320.50"
-        val expectedText = "$ 1,320.50"
+        for (locale in locales) {
+            val currentEditTextContent = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}50"
+            val expectedText = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}50"
 
-        `when`(editable.toString()).thenReturn(currentEditTextContent + "9")
+            val (editText, editable, watcher) = setupTestVariables(locale)
+            `when`(editable.toString()).thenReturn(currentEditTextContent + "9")
 
-        watcher.runAllWatcherMethods(editable)
+            watcher.runAllWatcherMethods(editable)
 
-        verify(editText, times(1)).setText(expectedText)
+            verify(editText, times(1)).setText(expectedText)
+        }
     }
 
     @Test
     fun `Should keep the current text as is when there is two decimal digit and multiple digits are added after the decimal symbol`() {
-        val currentEditTextContent = "$ 1,320.50"
-        val expectedText = "$ 1,320.50"
+        for (locale in locales) {
+            val currentEditTextContent = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}50"
+            val expectedText = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}50"
 
-        `when`(editable.toString()).thenReturn(currentEditTextContent + "92293948842")
+            val (editText, editable, watcher) = setupTestVariables(locale)
+            `when`(editable.toString()).thenReturn(currentEditTextContent + "92293948842")
 
-        watcher.runAllWatcherMethods(editable)
+            watcher.runAllWatcherMethods(editable)
 
-        verify(editText, times(1)).setText(expectedText)
+            verify(editText, times(1)).setText(expectedText)
+        }
     }
 
     @Test
     fun `Should keep only one decimal symbol when a decimal symbol is present and it is clicked again`() {
-        val currentEditTextContent = "$ 1,320.50"
-        val expectedText = "$ 1,320.50"
+        for (locale in locales) {
+            val currentEditTextContent = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}50"
+            val expectedText = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}50"
 
-        `when`(editable.toString()).thenReturn(currentEditTextContent + ".")
+            val (editText, editable, watcher) = setupTestVariables(locale)
+            `when`(editable.toString()).thenReturn(currentEditTextContent + locale.decimalSeparator)
 
-        watcher.runAllWatcherMethods(editable)
+            watcher.runAllWatcherMethods(editable)
 
-        verify(editText, times(1)).setText(expectedText)
+            verify(editText, times(1)).setText(expectedText)
+        }
     }
 
     @Test
     fun `Should not allow a delete when edit text is set to currency symbol and a delete is clicked`() {
-        val currentEditTextContent = "$ "
-        val expectedText = "$ "
+        for (locale in locales) {
+            val currentEditTextContent = locale.currencySymbol
+            val expectedText = locale.currencySymbol
 
-        `when`(editable.toString()).thenReturn(currentEditTextContent.removeLastChar())
+            val (editText, editable, watcher) = setupTestVariables(locale)
+            `when`(editable.toString()).thenReturn(currentEditTextContent.removeLastChar())
 
-        watcher.runAllWatcherMethods(editable)
+            watcher.runAllWatcherMethods(editable)
 
-        verify(editText, times(1)).setText(expectedText)
+            verify(editText, times(1)).setText(expectedText)
+        }
     }
 
     @Test
     fun `Should not allow a delete when edit text is set to currency symbol and a delete is clicked at the zeroth index`() {
-        val currentEditTextContent = "$ "
-        val expectedText = "$ "
+        for (locale in locales) {
+            val currentEditTextContent = locale.currencySymbol
+            val expectedText = locale.currencySymbol
 
-        `when`(editable.toString()).thenReturn(currentEditTextContent.removeFirstChar())
+            val (editText, editable, watcher) = setupTestVariables(locale)
+            `when`(editable.toString()).thenReturn(currentEditTextContent.removeFirstChar())
 
-        watcher.runAllWatcherMethods(editable)
+            watcher.runAllWatcherMethods(editable)
 
-        verify(editText, times(1)).setText(expectedText)
+            verify(editText, times(1)).setText(expectedText)
+        }
     }
+
+    private fun setupTestVariables(locale: LocaleVars): TestVars {
+        val editText = mock(CurrencyEditText::class.java)
+        val editable = mock(Editable::class.java)
+        `when`(editText.text).thenReturn(editable)
+        `when`(editable.append(isA(String::class.java))).thenReturn(editable)
+        val watcher = locale.toWatcher(editText)
+        return TestVars(editText, editable, watcher)
+    }
+
 }
+
+data class TestVars(
+        val editText: CurrencyEditText,
+        val editable: Editable,
+        val watcher: CurrencyInputWatcher
+)
