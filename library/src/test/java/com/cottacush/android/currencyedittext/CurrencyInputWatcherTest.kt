@@ -22,6 +22,7 @@ import org.mockito.Mockito.*
 
 class CurrencyInputWatcherTest {
 
+    // TODO Add more locale tests by their, tags, decimal separator and theur grouping separator
     private val locales = listOf(
             LocaleVars("en-NG", '.', ',', "$ "),
             LocaleVars("da-DK", ',', '.', "$ "),
