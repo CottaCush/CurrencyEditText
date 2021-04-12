@@ -285,11 +285,10 @@ class CurrencyInputWatcherTest {
         val watcher = locale.toWatcher(editText)
         return TestVars(editText, editable, watcher)
     }
-
 }
 
 data class TestVars(
-        val editText: CurrencyEditText,
-        val editable: Editable,
-        val watcher: CurrencyInputWatcher
+    val editText: CurrencyEditText,
+    val editable: Editable,
+    val watcher: CurrencyInputWatcher
 )
