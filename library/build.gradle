@@ -33,12 +33,17 @@ android {
                 'src/main/res-public'
         ]
     }
+
 }
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:' + versions.androidx
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:' + versions.kotlin
     api 'com.google.android.material:material:' + versions.material
+
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation "org.mockito:mockito-core:3.8.0"
+    testImplementation "org.mockito:mockito-inline:3.8.0"
 }
 
 apply from: '../spotless.gradle'

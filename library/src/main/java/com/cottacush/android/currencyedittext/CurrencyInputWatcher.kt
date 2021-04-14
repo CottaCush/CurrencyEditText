@@ -19,6 +19,7 @@ import android.annotation.SuppressLint
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
+import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
@@ -41,9 +42,12 @@ class CurrencyInputWatcher(
     private val wholeNumberDecimalFormat =
         (NumberFormat.getNumberInstance(locale) as DecimalFormat).apply {
             applyPattern("#,##0")
+            roundingMode = RoundingMode.DOWN
         }
 
-    private val fractionDecimalFormat = (NumberFormat.getNumberInstance(locale) as DecimalFormat)
+    private val fractionDecimalFormat = (NumberFormat.getNumberInstance(locale) as DecimalFormat).apply {
+        roundingMode = RoundingMode.DOWN
+    }
 
     val decimalFormatSymbols: DecimalFormatSymbols
         get() = wholeNumberDecimalFormat.decimalFormatSymbols
@@ -58,8 +62,15 @@ class CurrencyInputWatcher(
 
     @SuppressLint("SetTextI18n")
     override fun afterTextChanged(s: Editable) {
-        val newInputString = s.toString()
-        if (newInputString.length < currencySymbol.length) {
+        var newInputString = s.toString()
+        val isParsableString = try {
+            fractionDecimalFormat.parse(newInputString)!!
+            true
+        } catch (e: ParseException) {
+            false
+        }
+
+        if (newInputString.length < currencySymbol.length && !isParsableString) {
             editText.setText(currencySymbol)
             editText.setSelection(currencySymbol.length)
             return
@@ -73,12 +84,15 @@ class CurrencyInputWatcher(
         editText.removeTextChangedListener(this)
         val startLength = editText.text.length
         try {
-            val numberWithoutGroupingSeparator =
+            var numberWithoutGroupingSeparator =
                 parseMoneyValue(
                     newInputString,
                     decimalFormatSymbols.groupingSeparator.toString(),
                     currencySymbol
                 )
+            if (numberWithoutGroupingSeparator == decimalFormatSymbols.decimalSeparator.toString()) {
+                numberWithoutGroupingSeparator = "0$numberWithoutGroupingSeparator"
+            }
             val parsedNumber = fractionDecimalFormat.parse(numberWithoutGroupingSeparator)!!
             val selectionStartIndex = editText.selectionStart
             if (hasDecimalPoint) {
