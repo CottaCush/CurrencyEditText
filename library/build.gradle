@@ -2,8 +2,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply from: '../dependencies.gradle'
 
-apply from: '../bintrayconfig.gradle'
-
 android {
     compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
@@ -11,13 +9,6 @@ android {
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8
-
-        if (modulePackageId != null && modulePackageId != '') {
-            logger.warn('Package for current module: ' + modulePackageId)
-            kotlinOptions.freeCompilerArgs += ['-module-name', modulePackageId]
-        } else {
-            logger.warn('Skipping setting compiler module name, no package to use.')
-        }
     }
 
     defaultConfig {
