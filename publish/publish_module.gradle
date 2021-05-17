@@ -1,0 +1,91 @@
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+task androidSourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    if (project.plugins.findPlugin("com.android.library")) {
+        // For Android libraries
+        from android.sourceSets.main.java.srcDirs
+        from android.sourceSets.main.kotlin.srcDirs
+    } else {
+        // For pure Kotlin libraries
+        from sourceSets.main.java.srcDirs
+        from sourceSets.main.kotlin.srcDirs
+    }
+}
+
+artifacts {
+    archives androidSourcesJar
+}
+
+group = versions.publishGroupID
+version = versions.publishVersion
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+
+                groupId versions.publishGroupID
+                artifactId versions.publishArtifactID
+                version versions.publishVersion
+
+                if (project.plugins.findPlugin("com.android.library")) {
+                    from components.release
+                } else {
+                    artifact("$buildDir/libs/${project.getName()}-${version}.jar")
+                }
+
+                artifact androidSourcesJar
+
+                pom {
+                    name = versions.publishArtifactID
+                    description = 'A library to dynamically format your EditTexts to take currency inputs.'
+                    url = 'https://github.com/CottaCush/CurrencyEditText'
+                    licenses {
+                        license {
+                            name = 'Apache License'
+                            url = 'https://github.com/CottaCush/CurrencyEditText/blob/master/LICENSE.md'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'rasheedsulayman'
+                            name = 'Rasheed Sulayman'
+                            email = 'rasheed.sulayman@cottacush.com'
+                        }
+                        developer {
+                            id = 'efguydan'
+                            name = 'Efe Ejemudaro'
+                            email = 'efe.ejemudaro@cottacush.com'
+                        }
+                        developer {
+                            id = 'johnitoo'
+                            name = 'John Ohue'
+                            email = 'john@cottacush.com'
+                        }
+                        developer {
+                            id = 'thejer'
+                            name = 'Jerry Adeleye'
+                            email = 'jerry.adeleye@cottacush.com'
+                        }
+                    }
+
+                    scm {
+                        connection = 'scm:git:github.com/cottacush/currencyedittext.git'
+                        developerConnection = 'scm:git:ssh://github.com/cottacush/currencyedittext.git'
+                        url = 'https://github.com/cottacush/currencyedittext/tree/master'
+                    }
+                }
+            }
+        }
+    }
+}
+
+ext["signing.keyId"] = rootProject.ext["signing.keyId"]
+ext["signing.password"] = rootProject.ext["signing.password"]
+ext["signing.secretKeyRingFile"] = rootProject.ext["signing.secretKeyRingFile"]
+
+signing {
+    sign publishing.publications
+}

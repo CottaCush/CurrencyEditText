@@ -37,4 +37,5 @@ dependencies {
     testImplementation "org.mockito:mockito-inline:3.8.0"
 }
 
+apply from: "../publish/publish_module.gradle"
 apply from: '../spotless.gradle'
