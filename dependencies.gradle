@@ -4,7 +4,7 @@ ext.versions = [
         buildTools        : '30.0.2',
         publishGroupID    : 'com.cottacush',
         publishArtifactID : 'CurrencyEditText',
-        publishVersion    : '0.0.7',
+        publishVersion    : '0.0.8',
         publishVersionCode: 1,
 
         gradlePlugin      : '4.2.1',
