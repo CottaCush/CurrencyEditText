@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply from: '../dependencies.gradle'
+apply from: "../publish/publish_module.gradle"
 
 android {
     compileSdkVersion versions.compileSdk
@@ -9,6 +10,13 @@ android {
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8
+
+        if (modulePackageID != null && modulePackageID != '') {
+            logger.warn('Package for current module: ' + modulePackageID)
+            kotlinOptions.freeCompilerArgs += ['-module-name', modulePackageID]
+        } else {
+            logger.warn('Skipping setting compiler module name, no package to use.')
+        }
     }
 
     defaultConfig {
@@ -37,5 +45,4 @@ dependencies {
     testImplementation "org.mockito:mockito-inline:3.8.0"
 }
 
-apply from: "../publish/publish_module.gradle"
 apply from: '../spotless.gradle'

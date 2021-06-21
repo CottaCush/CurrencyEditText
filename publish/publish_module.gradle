@@ -1,6 +1,10 @@
 apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
+if (versions == null || versions.publishVersion == null) {
+    throw new IllegalStateException("Unable to reference publishVersion")
+}
+
 task androidSourcesJar(type: Jar) {
     archiveClassifier.set('sources')
     if (project.plugins.findPlugin("com.android.library")) {
@@ -89,3 +93,5 @@ ext["signing.secretKeyRingFile"] = rootProject.ext["signing.secretKeyRingFile"]
 signing {
     sign publishing.publications
 }
+
+ext.modulePackageID = versions.publishGroupID + '.' + versions.publishArtifactID
