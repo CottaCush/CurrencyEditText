@@ -36,7 +36,3 @@ nexusPublishing {
         }
     }
 }
-
-//if (versions == null || versions.publishVersion == null) {
-//    throw new IllegalStateException("Unable to reference publishVersion")
-//}
