@@ -1,7 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.vanniktech.maven.publish'
 apply from: '../dependencies.gradle'
-apply from: "../publish/publish_module.gradle"
+apply from: '../signing.gradle'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -32,7 +33,6 @@ android {
                 'src/main/res-public'
         ]
     }
-
 }
 
 dependencies {
