@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'com.vanniktech.maven.publish'
 apply from: '../dependencies.gradle'
-
-apply from: '../bintrayconfig.gradle'
+apply from: '../signing.gradle'
 
 android {
     compileSdkVersion versions.compileSdk
@@ -12,9 +12,9 @@ android {
         sourceCompatibility 1.8
         targetCompatibility 1.8
 
-        if (modulePackageId != null && modulePackageId != '') {
-            logger.warn('Package for current module: ' + modulePackageId)
-            kotlinOptions.freeCompilerArgs += ['-module-name', modulePackageId]
+        if (modulePackageID != null && modulePackageID != '') {
+            logger.warn('Package for current module: ' + modulePackageID)
+            kotlinOptions.freeCompilerArgs += ['-module-name', modulePackageID]
         } else {
             logger.warn('Skipping setting compiler module name, no package to use.')
         }
@@ -33,7 +33,6 @@ android {
                 'src/main/res-public'
         ]
     }
-
 }
 
 dependencies {
