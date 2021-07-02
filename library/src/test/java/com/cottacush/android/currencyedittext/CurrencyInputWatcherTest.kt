@@ -365,6 +365,25 @@ class CurrencyInputWatcherTest {
         }
     }
 
+    @Test
+    fun `Should change maximum decimal digits to 3 if setMaxNumberOfDecimalDigits(3) is called after being init with decimal digits 2`() {
+        for (locale in locales) {
+            val currentEditTextContent = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}519923345634"
+            val firstExpectedText = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}51"
+            val secondExpectedText = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}519"
+
+            val (editText, editable, watcher) = setupTestVariables(locale, decimalPlaces = 2)
+            val secondWatcher = locale.toWatcher(editText, 3)
+            `when`(editable.toString()).thenReturn(currentEditTextContent)
+
+            watcher.runAllWatcherMethods(editable)
+            secondWatcher.runAllWatcherMethods(editable)
+
+            verify(editText, times(1)).setText(firstExpectedText)
+            verify(editText, times(1)).setText(secondExpectedText)
+        }
+    }
+
     private fun setupTestVariables(locale: LocaleVars, decimalPlaces: Int = 2): TestVars {
         val editText = mock(CurrencyEditText::class.java)
         val editable = mock(Editable::class.java)
