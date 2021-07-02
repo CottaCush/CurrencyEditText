@@ -21,7 +21,7 @@ jobs:
 
       # Decrypt Secret files needed to deploy
       - name: Decrypt Secrets
-        run: release/signing_setup.sh $ENCRYPTION_KEY
+        run: signing/signing_setup.sh $ENCRYPTION_KEY
         env:
           ENCRYPTION_KEY: ${{ secrets.KEY_RING_ENCRYPTION_KEY }}
 
@@ -42,4 +42,4 @@ jobs:
       # Cleans up Secret files used in deployment process
       - name: Clean Secrets
         if: always()
-        run: release/signing_cleanup.sh
+        run: signing/signing_cleanup.sh
