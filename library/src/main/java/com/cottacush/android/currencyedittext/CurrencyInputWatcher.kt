@@ -19,7 +19,6 @@ import android.annotation.SuppressLint
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
-import com.cottacush.android.currencyedittext.utils.Constants
 import com.cottacush.android.currencyedittext.utils.Constants.Messages
 import java.lang.IllegalArgumentException
 import java.math.RoundingMode

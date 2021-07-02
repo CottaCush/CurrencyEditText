@@ -41,4 +41,4 @@ fun String.removeFirstChar() = removeCharAt(0)
 
 fun String.toLocale(): Locale = Locale.Builder().setLanguageTag(this).build()
 
-fun LocaleVars.toWatcher(editText: EditText) = CurrencyInputWatcher(editText, currencySymbol, tag.toLocale())
+fun LocaleVars.toWatcher(editText: EditText, decimalPlaces: Int = 2) = CurrencyInputWatcher(editText, currencySymbol, tag.toLocale(), decimalPlaces)

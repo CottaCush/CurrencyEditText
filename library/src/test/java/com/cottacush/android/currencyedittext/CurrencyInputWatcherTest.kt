@@ -17,8 +17,10 @@ package com.cottacush.android.currencyedittext
 
 import android.text.Editable
 import com.cottacush.android.currencyedittext.model.LocaleVars
+import org.junit.Assert
 import org.junit.Test
 import org.mockito.Mockito.*
+import java.lang.IllegalArgumentException
 
 class CurrencyInputWatcherTest {
 
@@ -277,12 +279,98 @@ class CurrencyInputWatcherTest {
         }
     }
 
-    private fun setupTestVariables(locale: LocaleVars): TestVars {
+    @Test
+    fun `Should keep a default of 2 decimal places when the max dp value isn't specified`() {
+        for (locale in locales) {
+            val currentEditTextContent = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}50992"
+            val expectedText = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}50"
+
+            val (editText, editable, watcher) = setupTestVariables(locale)
+            val watcherWithDefaultDP = CurrencyInputWatcher(editText, locale.currencySymbol, locale.tag.toLocale())
+            `when`(editable.toString()).thenReturn(currentEditTextContent)
+
+            watcherWithDefaultDP.runAllWatcherMethods(editable)
+
+            verify(editText, times(1)).setText(expectedText)
+        }
+    }
+
+    @Test
+    fun `Should throw an Exception when maximum dp is set to zero`() {
+        for (locale in locales) {
+            try {
+                val (editText, editable, watcher) = setupTestVariables(locale, decimalPlaces = 0)
+                Assert.fail("Should have caught an illegalArgumentException at this point")
+            } catch (e: IllegalArgumentException) { }
+        }
+    }
+
+    @Test
+    fun `Should keep only one decimal place when maximum dp is set to 1`() {
+        for (locale in locales) {
+            val currentEditTextContent = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}50992"
+            val expectedText = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}5"
+
+            val (editText, editable, watcher) = setupTestVariables(locale, decimalPlaces = 1)
+            `when`(editable.toString()).thenReturn(currentEditTextContent)
+
+            watcher.runAllWatcherMethods(editable)
+
+            verify(editText, times(1)).setText(expectedText)
+        }
+    }
+
+    @Test
+    fun `Should keep only two decimal places when maximum dp is set to 2`() {
+        for (locale in locales) {
+            val currentEditTextContent = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}51992"
+            val expectedText = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}51"
+
+            val (editText, editable, watcher) = setupTestVariables(locale, decimalPlaces = 2)
+            `when`(editable.toString()).thenReturn(currentEditTextContent)
+
+            watcher.runAllWatcherMethods(editable)
+
+            verify(editText, times(1)).setText(expectedText)
+        }
+    }
+
+    @Test
+    fun `Should keep only three decimal places when maximum dp is set to 3`() {
+        for (locale in locales) {
+            val currentEditTextContent = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}51992"
+            val expectedText = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}519"
+
+            val (editText, editable, watcher) = setupTestVariables(locale, decimalPlaces = 3)
+            `when`(editable.toString()).thenReturn(currentEditTextContent)
+
+            watcher.runAllWatcherMethods(editable)
+
+            verify(editText, times(1)).setText(expectedText)
+        }
+    }
+
+    @Test
+    fun `Should keep up to ten decimal places when maximum dp is set to 10`() {
+        for (locale in locales) {
+            val currentEditTextContent = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}519923345634"
+            val expectedText = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}5199233456"
+
+            val (editText, editable, watcher) = setupTestVariables(locale, decimalPlaces = 10)
+            `when`(editable.toString()).thenReturn(currentEditTextContent)
+
+            watcher.runAllWatcherMethods(editable)
+
+            verify(editText, times(1)).setText(expectedText)
+        }
+    }
+
+    private fun setupTestVariables(locale: LocaleVars, decimalPlaces: Int = 2): TestVars {
         val editText = mock(CurrencyEditText::class.java)
         val editable = mock(Editable::class.java)
         `when`(editText.text).thenReturn(editable)
         `when`(editable.append(isA(String::class.java))).thenReturn(editable)
-        val watcher = locale.toWatcher(editText)
+        val watcher = locale.toWatcher(editText, decimalPlaces)
         return TestVars(editText, editable, watcher)
     }
 }

@@ -26,7 +26,8 @@ import java.math.BigDecimal
 import java.util.*
 
 class CurrencyEditText(
-    context: Context, attrs: AttributeSet?
+    context: Context,
+    attrs: AttributeSet?
 ) : TextInputEditText(context, attrs) {
     private lateinit var currencySymbolPrefix: String
     private var textWatcher: CurrencyInputWatcher
