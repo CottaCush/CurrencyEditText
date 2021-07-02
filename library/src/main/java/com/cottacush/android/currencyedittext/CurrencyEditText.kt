@@ -48,7 +48,7 @@ class CurrencyEditText(
                 prefix = getString(R.styleable.CurrencyEditText_currencySymbol).orEmpty()
                 localeTag = getString(R.styleable.CurrencyEditText_localeTag)
                 useCurrencySymbolAsHint = getBoolean(R.styleable.CurrencyEditText_useCurrencySymbolAsHint, false)
-                maxDP = getInt(R.styleable.CurrencyEditText_maxNumberOfDecimalPlaces, 2)
+                maxDP = getInt(R.styleable.CurrencyEditText_maxNumberOfDecimalDigits, 2)
             } finally {
                 recycle()
             }
@@ -77,7 +77,7 @@ class CurrencyEditText(
         invalidateTextWatcher()
     }
 
-    fun setMaximumNumberOfDecimalPlaces(maxDP: Int) {
+    fun setMaxNumberOfDecimalDigits(maxDP: Int) {
         this.maxDP = maxDP
         invalidateTextWatcher()
     }

@@ -69,7 +69,8 @@ The `CurrencyEditText` uses the default `Locale` if no locale is specified. `Loc
  ```
  
 ### Decimal Places
-The maximum number of decimal digits can be specified using the `maxNumberOfDecimalDigits` attributes in the xml. However, it is optional and a default value of 2 is used.
+The maximum number of decimal digits can be specified using the `maxNumberOfDecimalDigits` attributes in the xml.
+A default value of 2 will be used, if it isn't specified.
 
 ```xml
    <com.cottacush.android.currencyedittext.CurrencyEditText

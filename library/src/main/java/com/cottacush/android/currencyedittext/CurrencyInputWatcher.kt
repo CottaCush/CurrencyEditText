@@ -38,7 +38,7 @@ class CurrencyInputWatcher(
 
     init {
         if (maxNumberOfDecimalPlaces < 1) {
-            throw IllegalArgumentException(Messages.MAX_DECIMAL_PLACES_ERROR)
+            throw IllegalArgumentException(Messages.MAX_DECIMAL_DIGITS_ERROR)
         }
     }
 
