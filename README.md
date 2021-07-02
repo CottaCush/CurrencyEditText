@@ -2,8 +2,8 @@
 
 A library to dynamically format your `EditTexts` to take currency inputs.
 
-[![Build Status](https://travis-ci.com/CottaCush/CurrencyEditText.svg?branch=master)](https://travis-ci.com/CottaCush/CurrencyEditText)
-[ ![Download](https://api.bintray.com/packages/cottacush/maven/CurrencyEditText/images/download.svg) ](https://bintray.com/cottacush/maven/CurrencyEditText/_latestVersion)
+[![ci](https://github.com/CottaCush/CurrencyEditText/actions/workflows/ci.yml/badge.svg)](https://github.com/CottaCush/CurrencyEditText/actions/workflows/ci.yml)
+[![Maven Central](https://img.shields.io/maven-central/v/com.cottacush/CurrencyEditText.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22com.cottacush%22%20AND%20a:%22CurrencyEditText%22)
 
 <img src="https://raw.githubusercontent.com/cottacush/currencyEditText/master/sample.gif" width="280" />
 
@@ -13,8 +13,9 @@ A library to dynamically format your `EditTexts` to take currency inputs.
 Add the dependency to your app's `build.gradle`:
 
 ```groovy
-implementation 'com.cottacush:CurrencyEditText:0.0.7'
+implementation 'com.cottacush:CurrencyEditText:<insert-latest-version-here>'
 ```
+For versions, kindly head over to the [releases page](https://github.com/CottaCush/CurrencyEditText/releases)
 
 ## Usage
 
@@ -66,6 +67,19 @@ The `CurrencyEditText` uses the default `Locale` if no locale is specified. `Loc
  ```kotlin
     currencyEditText.setLocale("en-NG") //Requires API level 21 and above.
  ```
+ 
+### Decimal Places
+The maximum number of decimal digits can be specified using the `maxNumberOfDecimalDigits` attributes in the xml. However, it is optional and a default value of 2 is used.
+
+```xml
+   <com.cottacush.android.currencyedittext.CurrencyEditText
+            ...
+            app:maxNumberOfDecimalDigits="3" />
+```
+or programmatically:
+```kotlin
+   currencyEditText.setMaxNumberOfDecimalDigits(3)
+```
         
 ## Getting the input value
 
