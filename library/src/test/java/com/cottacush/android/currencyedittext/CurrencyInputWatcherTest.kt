@@ -351,6 +351,21 @@ class CurrencyInputWatcherTest {
     }
 
     @Test
+    fun `Should keep only seven decimal digits when maximum dp is set to 7`() {
+        for (locale in locales) {
+            val currentEditTextContent = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}519923345634"
+            val expectedText = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}5199233"
+
+            val (editText, editable, watcher) = setupTestVariables(locale, decimalPlaces = 7)
+            `when`(editable.toString()).thenReturn(currentEditTextContent)
+
+            watcher.runAllWatcherMethods(editable)
+
+            verify(editText, times(1)).setText(expectedText)
+        }
+    }
+
+    @Test
     fun `Should keep up to ten decimal places when maximum dp is set to 10`() {
         for (locale in locales) {
             val currentEditTextContent = "${locale.currencySymbol}1${locale.groupingSeparator}320${locale.decimalSeparator}519923345634"

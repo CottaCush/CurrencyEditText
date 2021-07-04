@@ -19,7 +19,6 @@ import android.annotation.SuppressLint
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
-import com.cottacush.android.currencyedittext.utils.Constants.Messages
 import java.lang.IllegalArgumentException
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -38,7 +37,7 @@ class CurrencyInputWatcher(
 
     init {
         if (maxNumberOfDecimalPlaces < 1) {
-            throw IllegalArgumentException(Messages.MAX_DECIMAL_DIGITS_ERROR)
+            throw IllegalArgumentException("Maximum number of Decimal Digits must be a positive integer")
         }
     }
 
