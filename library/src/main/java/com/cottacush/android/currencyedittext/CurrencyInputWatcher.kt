@@ -19,6 +19,7 @@ import android.annotation.SuppressLint
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
+import java.lang.IllegalArgumentException
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
@@ -30,11 +31,17 @@ import kotlin.math.min
 class CurrencyInputWatcher(
     private val editText: EditText,
     private val currencySymbol: String,
-    locale: Locale
+    locale: Locale,
+    private val maxNumberOfDecimalPlaces: Int = 2
 ) : TextWatcher {
 
+    init {
+        if (maxNumberOfDecimalPlaces < 1) {
+            throw IllegalArgumentException("Maximum number of Decimal Digits must be a positive integer")
+        }
+    }
+
     companion object {
-        const val MAX_NO_OF_DECIMAL_PLACES = 2
         const val FRACTION_FORMAT_PATTERN_PREFIX = "#,##0."
     }
 
@@ -124,6 +131,6 @@ class CurrencyInputWatcher(
      */
     private fun getFormatSequenceAfterDecimalSeparator(number: String): String {
         val noOfCharactersAfterDecimalPoint = number.length - number.indexOf(decimalFormatSymbols.decimalSeparator) - 1
-        return "0".repeat(min(noOfCharactersAfterDecimalPoint, MAX_NO_OF_DECIMAL_PLACES))
+        return "0".repeat(min(noOfCharactersAfterDecimalPoint, maxNumberOfDecimalPlaces))
     }
 }

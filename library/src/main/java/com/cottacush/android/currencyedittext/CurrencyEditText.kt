@@ -25,10 +25,14 @@ import com.google.android.material.textfield.TextInputEditText
 import java.math.BigDecimal
 import java.util.*
 
-class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditText(context, attrs) {
+class CurrencyEditText(
+    context: Context,
+    attrs: AttributeSet?
+) : TextInputEditText(context, attrs) {
     private lateinit var currencySymbolPrefix: String
     private var textWatcher: CurrencyInputWatcher
     private var locale: Locale = Locale.getDefault()
+    private var maxDP: Int
 
     init {
         var useCurrencySymbolAsHint = false
@@ -44,6 +48,7 @@ class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditTe
                 prefix = getString(R.styleable.CurrencyEditText_currencySymbol).orEmpty()
                 localeTag = getString(R.styleable.CurrencyEditText_localeTag)
                 useCurrencySymbolAsHint = getBoolean(R.styleable.CurrencyEditText_useCurrencySymbolAsHint, false)
+                maxDP = getInt(R.styleable.CurrencyEditText_maxNumberOfDecimalDigits, 2)
             } finally {
                 recycle()
             }
@@ -51,7 +56,7 @@ class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditTe
         currencySymbolPrefix = if (prefix.isBlank()) "" else "$prefix "
         if (useCurrencySymbolAsHint) hint = currencySymbolPrefix
         if (isLollipopAndAbove() && !localeTag.isNullOrBlank()) locale = getLocaleFromTag(localeTag!!)
-        textWatcher = CurrencyInputWatcher(this, currencySymbolPrefix, locale)
+        textWatcher = CurrencyInputWatcher(this, currencySymbolPrefix, locale, maxDP)
         addTextChangedListener(textWatcher)
     }
 
@@ -72,9 +77,14 @@ class CurrencyEditText(context: Context, attrs: AttributeSet?) : TextInputEditTe
         invalidateTextWatcher()
     }
 
+    fun setMaxNumberOfDecimalDigits(maxDP: Int) {
+        this.maxDP = maxDP
+        invalidateTextWatcher()
+    }
+
     private fun invalidateTextWatcher() {
         removeTextChangedListener(textWatcher)
-        textWatcher = CurrencyInputWatcher(this, currencySymbolPrefix, locale)
+        textWatcher = CurrencyInputWatcher(this, currencySymbolPrefix, locale, maxDP)
         addTextChangedListener(textWatcher)
     }
 

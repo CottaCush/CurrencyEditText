@@ -11,6 +11,7 @@
             app:currencySymbol="$"
             app:useCurrencySymbolAsHint="true"
             app:localeTag="en-NG"
+            app:maxNumberOfDecimalDigits="2"
             android:layout_width="wrap_content"
             android:layout_height="60dp"
             android:ems="10"
