@@ -19,13 +19,11 @@ import android.annotation.SuppressLint
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
-import java.lang.IllegalArgumentException
-import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.text.NumberFormat
 import java.text.ParseException
-import java.util.Locale
+import java.util.*
 import kotlin.math.min
 
 class CurrencyInputWatcher(
@@ -49,11 +47,9 @@ class CurrencyInputWatcher(
     private val wholeNumberDecimalFormat =
         (NumberFormat.getNumberInstance(locale) as DecimalFormat).apply {
             applyPattern("#,##0")
-            roundingMode = RoundingMode.DOWN
         }
 
     private val fractionDecimalFormat = (NumberFormat.getNumberInstance(locale) as DecimalFormat).apply {
-        roundingMode = RoundingMode.DOWN
     }
 
     val decimalFormatSymbols: DecimalFormatSymbols
@@ -100,6 +96,13 @@ class CurrencyInputWatcher(
             if (numberWithoutGroupingSeparator == decimalFormatSymbols.decimalSeparator.toString()) {
                 numberWithoutGroupingSeparator = "0$numberWithoutGroupingSeparator"
             }
+
+            numberWithoutGroupingSeparator = truncateNumberToMaxDecimalDigits(
+                numberWithoutGroupingSeparator,
+                maxNumberOfDecimalPlaces,
+                decimalFormatSymbols.decimalSeparator
+            )
+
             val parsedNumber = fractionDecimalFormat.parse(numberWithoutGroupingSeparator)!!
             val selectionStartIndex = editText.selectionStart
             if (hasDecimalPoint) {
