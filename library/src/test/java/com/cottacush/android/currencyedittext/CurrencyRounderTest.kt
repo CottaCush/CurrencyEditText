@@ -17,178 +17,66 @@ package com.cottacush.android.currencyedittext
 
 import org.junit.Assert
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 
-class CurrencyRounderTest {
+@RunWith(Parameterized::class)
+class CurrencyRounderTest(
+    private val current: String,
+    private val expected: String,
+    private val decimalDigits: Int,
+    private val decimalSeparator: Char
+) {
 
     companion object {
-        const val POINT_DECIMAL_SEPARATOR = '.'
-        const val COMMA_DECIMAL_SEPARATOR = ','
-        const val TWO = 2
-        const val THREE = 3
-    }
+        private const val POINT_DECIMAL_SEPARATOR = '.'
+        private const val COMMA_DECIMAL_SEPARATOR = ','
+        private const val TWO = 2
+        private const val THREE = 3
 
-    @Test
-    fun `should return empty string if told to format empty string`() {
-        var current = ""
-        var expected = ""
+        private val emptyStringTestCase = arrayOf("", "", TWO, POINT_DECIMAL_SEPARATOR)
+        private val extraDecimalTestCase1 = arrayOf("223.55644234234", "223.55", TWO, POINT_DECIMAL_SEPARATOR)
+        private val extraDecimalTestCaseThreeDpVersion = arrayOf("223.55644234234", "223.556", THREE, POINT_DECIMAL_SEPARATOR)
+        private val extraDecimalTestCase2 = arrayOf("334,242,203.4234234", "334,242,203.423", THREE, POINT_DECIMAL_SEPARATOR)
+        private val extraDecimalTestCaseWhiteSpaceGrouping = arrayOf("334 242 203.4234234", "334 242 203.423", THREE, POINT_DECIMAL_SEPARATOR)
+        private val extraDecimalTestCaseCommaDecimal = arrayOf("334.242.203,4234234", "334.242.203,42", TWO, COMMA_DECIMAL_SEPARATOR)
+        private val emptyWholeTestCase = arrayOf(".4234234", ".42", TWO, POINT_DECIMAL_SEPARATOR)
+        private val emptyDecimalTestCase = arrayOf("4,234,234.", "4,234,234.", TWO, POINT_DECIMAL_SEPARATOR)
+        private val shorterDecimalTestCase = arrayOf("23.45", "23.45", THREE, POINT_DECIMAL_SEPARATOR)
+        private val shorterDecimalTestCase2 = arrayOf("23.4", "23.4", THREE, POINT_DECIMAL_SEPARATOR)
+        private val exactDecimalTestCase = arrayOf("515.809", "515.809", THREE, POINT_DECIMAL_SEPARATOR)
+        private val noDecimalTestCase = arrayOf("5 809", "5 809", THREE, POINT_DECIMAL_SEPARATOR)
+        private val noDecimalTestCase2 = arrayOf("5", "5", THREE, POINT_DECIMAL_SEPARATOR)
+        private val noDecimalTestCase3 = arrayOf("5,452,635,242,242,423,434,333", "5,452,635,242,242,423,434,333", THREE, POINT_DECIMAL_SEPARATOR)
+        private val multipleDecimalTestCase = arrayOf("343,432,242,342", "343,432,242,342", TWO, COMMA_DECIMAL_SEPARATOR)
 
-        Assert.assertEquals(
-            expected,
-            truncateNumberToMaxDecimalDigits(current, TWO, POINT_DECIMAL_SEPARATOR)
+        @JvmStatic
+        @Parameterized.Parameters
+        fun data(): Iterable<Array<Any>> = listOf(
+            emptyStringTestCase,
+            extraDecimalTestCase1,
+            extraDecimalTestCaseThreeDpVersion,
+            extraDecimalTestCase2,
+            extraDecimalTestCaseWhiteSpaceGrouping,
+            extraDecimalTestCaseCommaDecimal,
+            emptyWholeTestCase,
+            emptyDecimalTestCase,
+            shorterDecimalTestCase,
+            shorterDecimalTestCase2,
+            exactDecimalTestCase,
+            noDecimalTestCase,
+            noDecimalTestCase2,
+            noDecimalTestCase3,
+            multipleDecimalTestCase
         )
     }
 
     @Test
-    fun `should truncate extra decimal digits away when given long digits`() {
-        var current = "223.55644234234"
-        var expected = "223.55"
-
+    fun `should return expected value for set of valid inputs`() {
         Assert.assertEquals(
             expected,
-            truncateNumberToMaxDecimalDigits(current, TWO, POINT_DECIMAL_SEPARATOR)
+            truncateNumberToMaxDecimalDigits(current, decimalDigits, decimalSeparator)
         )
     }
 
-    @Test
-    fun `should truncate extra decimal digits away when given long digits (three dp version)`() {
-        var current = "223.55644234234"
-        var expected = "223.556"
-
-        Assert.assertEquals(
-            expected,
-            truncateNumberToMaxDecimalDigits(current, THREE, POINT_DECIMAL_SEPARATOR)
-        )
-    }
-
-    @Test
-    fun `should truncate extra decimal digits away when given long digits (example 2)`() {
-        var current = "334,242,203.4234234"
-        var expected = "334,242,203.423"
-
-        Assert.assertEquals(
-            expected,
-            truncateNumberToMaxDecimalDigits(current, THREE, POINT_DECIMAL_SEPARATOR)
-        )
-    }
-
-    @Test
-    fun `should truncate extra decimal digits away when given long digits (whitespace decimal separator version)`() {
-        var current = "334 242 203.4234234"
-        var expected = "334 242 203.423"
-
-        Assert.assertEquals(
-            expected,
-            truncateNumberToMaxDecimalDigits(current, THREE, POINT_DECIMAL_SEPARATOR)
-        )
-    }
-
-    @Test
-    fun `should truncate extra decimal digits away when given long digits (comma decimal separator version)`() {
-        var current = "334.242.203,4234234"
-        var expected = "334.242.203,42"
-
-        Assert.assertEquals(
-            expected,
-            truncateNumberToMaxDecimalDigits(current, TWO, COMMA_DECIMAL_SEPARATOR)
-        )
-    }
-
-    @Test
-    fun `should truncate extra decimal digits when number with empty whole format is passed`() {
-        var current = ".4234234"
-        var expected = ".42"
-
-        Assert.assertEquals(
-            expected,
-            truncateNumberToMaxDecimalDigits(current, TWO, POINT_DECIMAL_SEPARATOR)
-        )
-    }
-
-    @Test
-    fun `should truncate extra decimal digits when number with empty decimal numbers is passed`() {
-        var current = "4234234."
-        var expected = "4234234."
-
-        Assert.assertEquals(
-            expected,
-            truncateNumberToMaxDecimalDigits(current, TWO, POINT_DECIMAL_SEPARATOR)
-        )
-    }
-
-    @Test
-    fun `should return original number when number with shorter decimal places is passed`() {
-        var current = "23.45"
-        var expected = "23.45"
-
-        Assert.assertEquals(
-            expected,
-            truncateNumberToMaxDecimalDigits(current, THREE, POINT_DECIMAL_SEPARATOR)
-        )
-    }
-
-    @Test
-    fun `should return original number when number with shorter decimal places is passed (example 2)`() {
-        var current = "23.4"
-        var expected = "23.4"
-
-        Assert.assertEquals(
-            expected,
-            truncateNumberToMaxDecimalDigits(current, THREE, POINT_DECIMAL_SEPARATOR)
-        )
-    }
-
-    @Test
-    fun `should return original number when number with shorter decimal places is passed (example 3)`() {
-        var current = "515.809"
-        var expected = "515.809"
-
-        Assert.assertEquals(
-            expected,
-            truncateNumberToMaxDecimalDigits(current, THREE, POINT_DECIMAL_SEPARATOR)
-        )
-    }
-
-    @Test
-    fun `should return original number when number doesn't contain decimal separator`() {
-        var current = "5 809"
-        var expected = "5 809"
-
-        Assert.assertEquals(
-            expected,
-            truncateNumberToMaxDecimalDigits(current, THREE, POINT_DECIMAL_SEPARATOR)
-        )
-    }
-
-    @Test
-    fun `should return original number when number doesn't contain decimal separator (example 2)`() {
-        var current = "5"
-        var expected = "5"
-
-        Assert.assertEquals(
-            expected,
-            truncateNumberToMaxDecimalDigits(current, THREE, POINT_DECIMAL_SEPARATOR)
-        )
-    }
-
-    @Test
-    fun `should return original number when number doesn't contain decimal separator (example 3)`() {
-        var current = "5,452,635,242,242,423,434,333"
-        var expected = "5,452,635,242,242,423,434,333"
-
-        Assert.assertEquals(
-            expected,
-            truncateNumberToMaxDecimalDigits(current, THREE, POINT_DECIMAL_SEPARATOR)
-        )
-    }
-
-    @Test
-    fun `should return original number when number contains more than one decimal separator`() {
-        var current = "343,432,242,342"
-        var expected = "343,432,242,342"
-
-        Assert.assertEquals(
-            expected,
-            truncateNumberToMaxDecimalDigits(current, THREE, POINT_DECIMAL_SEPARATOR)
-        )
-    }
 }
