@@ -78,5 +78,4 @@ class CurrencyRounderTest(
             truncateNumberToMaxDecimalDigits(current, decimalDigits, decimalSeparator)
         )
     }
-
 }
