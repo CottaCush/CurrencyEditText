@@ -27,6 +27,7 @@ class CurrencyInputWatcherTest {
     // TODO Add more locale tests by their, tags, decimal separator and theur grouping separator
     private val locales = listOf(
             LocaleVars("en-NG", '.', ',', "$ "),
+            LocaleVars("en-US", '.', ',', "$ "),
             LocaleVars("da-DK", ',', '.', "$ "),
             LocaleVars("fr-CA", ',', ' ', "$ ")
     )
@@ -396,6 +397,23 @@ class CurrencyInputWatcherTest {
 
             verify(editText, times(1)).setText(firstExpectedText)
             verify(editText, times(1)).setText(secondExpectedText)
+        }
+    }
+
+    @Test
+    fun `Should retain valid number if imputed`() {
+        // This test tries to replicate issue #29 which fails on some devices and passes for some.
+        // It however passes on my local. but might be helpful to have the test in here.
+        for (locale in locales) {
+            val currentEditTextContent = "515${locale.decimalSeparator}809"
+            val expectedText = "${locale.currencySymbol}515${locale.decimalSeparator}809"
+
+            val (editText, editable, watcher) = setupTestVariables(locale, decimalPlaces = 3)
+            `when`(editable.toString()).thenReturn(currentEditTextContent)
+
+            watcher.runAllWatcherMethods(editable)
+
+            verify(editText, times(1)).setText(expectedText)
         }
     }
 
