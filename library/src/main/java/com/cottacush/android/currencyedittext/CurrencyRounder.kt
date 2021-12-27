@@ -34,7 +34,7 @@ fun truncateNumberToMaxDecimalDigits(
     decimalSeparator: Char
 ): String {
     // Split number into whole and decimal part
-    var arr = number
+    val arr = number
         .split(decimalSeparator)
         .toMutableList()
 

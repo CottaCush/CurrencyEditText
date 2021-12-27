@@ -49,8 +49,7 @@ class CurrencyInputWatcher(
             applyPattern("#,##0")
         }
 
-    private val fractionDecimalFormat = (NumberFormat.getNumberInstance(locale) as DecimalFormat).apply {
-    }
+    private val fractionDecimalFormat = (NumberFormat.getNumberInstance(locale) as DecimalFormat)
 
     val decimalFormatSymbols: DecimalFormatSymbols
         get() = wholeNumberDecimalFormat.decimalFormatSymbols
