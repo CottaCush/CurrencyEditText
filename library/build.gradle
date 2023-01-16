@@ -44,5 +44,3 @@ dependencies {
     testImplementation "org.mockito:mockito-core:3.8.0"
     testImplementation "org.mockito:mockito-inline:3.8.0"
 }
-
-apply from: '../spotless.gradle'
