@@ -44,6 +44,7 @@ class CurrencyInputWatcher(
     }
 
     private var hasDecimalPoint = false
+    private var lastText: String = ""
     private val wholeNumberDecimalFormat =
         (NumberFormat.getNumberInstance(locale) as DecimalFormat).apply {
             applyPattern("#,##0")
@@ -56,6 +57,7 @@ class CurrencyInputWatcher(
 
     override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
         fractionDecimalFormat.isDecimalSeparatorAlwaysShown = true
+        lastText = s.toString()
     }
 
     override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -64,12 +66,19 @@ class CurrencyInputWatcher(
 
     @SuppressLint("SetTextI18n")
     override fun afterTextChanged(s: Editable) {
-        var newInputString = s.toString()
+        val newInputString = s.toString()
         val isParsableString = try {
             fractionDecimalFormat.parse(newInputString)!!
             true
         } catch (e: ParseException) {
             false
+        }
+
+        if (hasDecimalPoint && s.toString().count { it == decimalFormatSymbols.decimalSeparator } > 1) {
+            val lastSelection = editText.selectionStart - 1
+            editText.setText(lastText)
+            editText.setSelection(lastSelection)
+            return
         }
 
         if (newInputString.length < currencySymbol.length && !isParsableString) {

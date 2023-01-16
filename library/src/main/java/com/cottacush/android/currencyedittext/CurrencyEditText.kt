@@ -19,6 +19,7 @@ import android.content.Context
 import android.graphics.Rect
 import android.os.Build
 import android.text.InputType
+import android.text.method.DigitsKeyListener
 import android.util.AttributeSet
 import androidx.annotation.RequiresApi
 import com.google.android.material.textfield.TextInputEditText
@@ -57,6 +58,7 @@ class CurrencyEditText(
         if (useCurrencySymbolAsHint) hint = currencySymbolPrefix
         if (isLollipopAndAbove() && !localeTag.isNullOrBlank()) locale = getLocaleFromTag(localeTag!!)
         textWatcher = CurrencyInputWatcher(this, currencySymbolPrefix, locale, maxDP)
+        keyListener = DigitsKeyListener.getInstance("0123456789${textWatcher.decimalFormatSymbols.decimalSeparator}")
         addTextChangedListener(textWatcher)
     }
 
