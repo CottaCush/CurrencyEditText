@@ -1,21 +1,22 @@
-//spotless {
-//  format 'misc', {
-//    target '*.gradle', '*.md', '.gitignore'
-//
-//    trimTrailingWhitespace()
-//    indentWithTabs()
-//    endWithNewline()
-//  }
-//  java {
-//    target "**/*.java"
-//    trimTrailingWhitespace()
-//    removeUnusedImports()
-//    googleJavaFormat()
-//    endWithNewline()
-//  }
-//  kotlin {
-//    target "**/*.kt"
-//    ktlint()
-//    licenseHeaderFile '../spotless.license.kt'
-//  }
-//}
+apply plugin: "com.diffplug.spotless"
+spotless {
+    format 'misc', {
+        target '*.gradle', '*.md', '.gitignore'
+
+        trimTrailingWhitespace()
+        indentWithTabs()
+        endWithNewline()
+    }
+    java {
+        target "**/*.java"
+        trimTrailingWhitespace()
+        removeUnusedImports()
+        googleJavaFormat()
+        endWithNewline()
+    }
+    kotlin {
+        target "**/*.kt"
+        ktlint()
+        licenseHeaderFile '../spotless.license.kt'
+    }
+}

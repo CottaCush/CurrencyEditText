@@ -1,18 +1,11 @@
 ext.versions = [
         minSdk            : 19,
         compileSdk        : 33,
-        buildTools        : '30.0.2',
         publishGroupID    : 'com.cottacush',
         publishArtifactID : 'CurrencyEditText',
         publishVersion    : '1.0.0',
         publishVersionCode: 1,
 
-        gradlePlugin      : '4.2.1',
-        spotlessPlugin    : '6.12.0',
-        versionsPlugin    : '0.21.0',
-        mavenPublishPlugin: '0.15.1',
-
-        kotlin            : '1.6.10',
         ktx               : '1.0.2',
         androidx          : '1.0.2',
 

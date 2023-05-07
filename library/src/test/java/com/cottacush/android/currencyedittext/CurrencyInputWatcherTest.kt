@@ -19,17 +19,21 @@ import android.text.Editable
 import com.cottacush.android.currencyedittext.model.LocaleVars
 import org.junit.Assert
 import org.junit.Test
-import org.mockito.Mockito.*
+import org.mockito.ArgumentMatchers.isA
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import java.lang.IllegalArgumentException
 
 class CurrencyInputWatcherTest {
 
     // TODO Add more locale tests by their, tags, decimal separator and theur grouping separator
     private val locales = listOf(
-            LocaleVars("en-NG", '.', ',', "$ "),
-            LocaleVars("en-US", '.', ',', "$ "),
-            LocaleVars("da-DK", ',', '.', "$ "),
-            LocaleVars("fr-CA", ',', ' ', "$ ")
+        LocaleVars("en-NG", '.', ',', "$ "),
+        LocaleVars("en-US", '.', ',', "$ "),
+        LocaleVars("da-DK", ',', '.', "$ "),
+        LocaleVars("fr-CA", ',', ' ', "$ ")
     )
 
     @Test
