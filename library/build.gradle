@@ -11,6 +11,7 @@ apply from: '../signing/signing.gradle'
 
 android {
     compileSdk versions.compileSdk
+    namespace 'com.cottacush.android.currencyedittext'
 
     compileOptions {
         sourceCompatibility 1.8
