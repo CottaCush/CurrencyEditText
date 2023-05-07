@@ -1,32 +1,7 @@
-apply from: './dependencies.gradle'
-
-buildscript {
-  apply from: './dependencies.gradle'
-
-  repositories {
-    google()
-    mavenCentral()
-  }
-
-  dependencies {
-    classpath 'com.android.tools.build:gradle:' + versions.gradlePlugin
-    classpath "com.diffplug.spotless:spotless-plugin-gradle:" + versions.spotlessPlugin
-    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:' + versions.kotlin
-    classpath 'com.vanniktech:gradle-maven-publish-plugin:' + versions.mavenPublishPlugin
-  }
-}
-
-allprojects {
-  repositories {
-    google()
-    mavenCentral()
-  }
-
-  tasks.withType(Javadoc).all {
-    enabled = false
-  }
-}
-
-task clean(type: Delete) {
-  delete rootProject.buildDir
+plugins {
+  id 'com.android.application' version '7.1.2' apply false
+  id 'com.android.library' version '7.1.2' apply false
+  id 'org.jetbrains.kotlin.android' version '1.6.10' apply false
+  id "com.diffplug.spotless" version "6.12.0"
+  id "com.vanniktech.maven.publish" version "0.15.1"
 }
