@@ -11,5 +11,7 @@ spotless {
         target "**/*.kt"
         ktlint()
         licenseHeaderFile '../spotless.license.kt'
+        trimTrailingWhitespace()
+        endWithNewline()
     }
 }
