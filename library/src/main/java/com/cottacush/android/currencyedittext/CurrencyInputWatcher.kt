@@ -107,7 +107,7 @@ class CurrencyInputWatcher(
             if (hasDecimalPoint) {
                 fractionDecimalFormat.applyPattern(
                     FRACTION_FORMAT_PATTERN_PREFIX +
-                            getFormatSequenceAfterDecimalSeparator(numberWithoutGroupingSeparator)
+                        getFormatSequenceAfterDecimalSeparator(numberWithoutGroupingSeparator)
                 )
                 editText.setText("$currencySymbol${fractionDecimalFormat.format(parsedNumber)}")
             } else {

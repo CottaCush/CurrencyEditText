@@ -1,35 +1,33 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'org.jetbrains.kotlin.android'
+}
+
 apply from: '../dependencies.gradle'
 
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-
-
 android {
-  compileSdkVersion versions.compileSdk
-  buildToolsVersion versions.buildTools
+    compileSdk versions.compileSdk
+    namespace 'com.cottacush.android'
 
-  compileOptions {
-    sourceCompatibility 1.8
-    targetCompatibility 1.8
-  }
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
 
-  defaultConfig {
-    applicationId "com.cottacush.android.currencyedittext"
-    minSdkVersion versions.minSdk
-    targetSdkVersion versions.compileSdk
-    versionCode versions.publishVersionCode
-    versionName versions.publishVersion
-  }
+    defaultConfig {
+        applicationId "com.cottacush.android.currencyedittext"
+        minSdk versions.minSdk
+        targetSdk versions.compileSdk
+    }
 }
 
 dependencies {
-  implementation project(':library')
-  implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:' + versions.kotlin
-  implementation 'androidx.core:core-ktx:' + versions.ktx
-  implementation 'com.google.android.material:material:' + versions.material
-  implementation 'androidx.appcompat:appcompat:' + versions.androidx
-  implementation 'com.android.support.constraint:constraint-layout:' + versions.constraintLayout
+    implementation project(':library')
+    implementation 'androidx.core:core-ktx:' + versions.ktx
+    implementation 'com.google.android.material:material:' + versions.material
+    implementation 'androidx.appcompat:appcompat:' + versions.androidx
 }
 
 apply from: '../spotless.gradle'

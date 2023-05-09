@@ -42,7 +42,8 @@ class CurrencyEditText(
         context.theme.obtainStyledAttributes(
             attrs,
             R.styleable.CurrencyEditText,
-            0, 0
+            0,
+            0
         ).run {
             try {
                 prefix = getString(R.styleable.CurrencyEditText_currencySymbol).orEmpty()

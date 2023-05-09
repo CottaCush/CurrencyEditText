@@ -1,30 +1,30 @@
-apply plugin: 'com.android.library'
-apply plugin: 'kotlin-android'
-apply plugin: 'com.vanniktech.maven.publish'
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'org.jetbrains.kotlin.android'
+    id 'com.diffplug.spotless'
+    id 'com.vanniktech.maven.publish'
+}
+
 apply from: '../dependencies.gradle'
 apply from: '../signing/signing.gradle'
 
 android {
-    compileSdkVersion versions.compileSdk
-    buildToolsVersion versions.buildTools
+    compileSdk versions.compileSdk
+    namespace 'com.cottacush.android.currencyedittext'
 
     compileOptions {
         sourceCompatibility 1.8
         targetCompatibility 1.8
+    }
 
-        if (modulePackageID != null && modulePackageID != '') {
-            logger.warn('Package for current module: ' + modulePackageID)
-            kotlinOptions.freeCompilerArgs += ['-module-name', modulePackageID]
-        } else {
-            logger.warn('Skipping setting compiler module name, no package to use.')
-        }
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 
     defaultConfig {
-        minSdkVersion versions.minSdk
-        targetSdkVersion versions.compileSdk
-        versionCode versions.publishVersionCode
-        versionName versions.publishVersion
+        minSdk versions.minSdk
+        targetSdk versions.compileSdk
     }
 
     sourceSets {
@@ -37,12 +37,11 @@ android {
 
 dependencies {
     implementation 'androidx.appcompat:appcompat:' + versions.androidx
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:' + versions.kotlin
     api 'com.google.android.material:material:' + versions.material
 
     testImplementation 'junit:junit:4.13.2'
-    testImplementation "org.mockito:mockito-core:3.8.0"
-    testImplementation "org.mockito:mockito-inline:3.8.0"
+    testImplementation "org.mockito:mockito-core:4.6.0"
+    testImplementation "org.mockito:mockito-inline:4.6.0"
 }
 
 apply from: '../spotless.gradle'
