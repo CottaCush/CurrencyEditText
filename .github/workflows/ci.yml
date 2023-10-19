@@ -18,7 +18,7 @@ jobs:
           cache: gradle
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
+        uses: android-actions/setup-android@v3
 
       - name: Build and Run Tests with Gradle
         run: ./gradlew build
