@@ -6,7 +6,7 @@ ext.versions = [
         publishVersion    : '1.0.0',
         publishVersionCode: 1,
 
-        ktx               : '1.6.0',
+        ktx               : '1.13.1',
         androidx          : '1.4.2',
         material          : '1.7.0',
 ]
