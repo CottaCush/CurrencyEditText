@@ -8,5 +8,5 @@ ext.versions = [
 
         ktx               : '1.6.0',
         androidx          : '1.4.2',
-        material          : '1.7.0',
+        material          : '1.12.0',
 ]
