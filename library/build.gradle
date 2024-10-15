@@ -40,7 +40,7 @@ dependencies {
     api 'com.google.android.material:material:' + versions.material
 
     testImplementation 'junit:junit:4.13.2'
-    testImplementation "org.mockito:mockito-core:5.3.1"
+    testImplementation "org.mockito:mockito-core:5.14.2"
     testImplementation "org.mockito:mockito-inline:5.2.0"
 }
 
